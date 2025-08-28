@@ -1,3 +1,10 @@
+# [1.3.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.2.0...v1.3.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* simplify Python installation in Dockerfile ([e1ff375](https://github.com/liamhelmer/claude-flow-dagger/commit/e1ff37595088437867fa5e02c132160639b3eca8))
+
 # [1.2.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.1.0...v1.2.0) (2025-08-28)
 
 
