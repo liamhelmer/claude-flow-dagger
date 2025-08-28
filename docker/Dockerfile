@@ -140,9 +140,6 @@ RUN wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | apt-key add -
 # Stage 5: Claude tools and MCP servers
 FROM database-tools AS claude-tools
 
-# Install Claude CLI
-RUN npm install -g @anthropic/claude-cli@latest
-
 # Install claude-flow v2.0.0-alpha.101
 ARG CLAUDE_FLOW_VERSION=2.0.0-alpha.101
 RUN npm install -g claude-flow@${CLAUDE_FLOW_VERSION}
