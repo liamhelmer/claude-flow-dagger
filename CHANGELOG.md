@@ -1,3 +1,10 @@
+# [1.11.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.10.0...v1.11.0) (2025-08-28)
+
+
+### Performance Improvements
+
+* optimize Docker build for faster CI/CD ([7cc1ded](https://github.com/liamhelmer/claude-flow-dagger/commit/7cc1ded4a365e16c1368a242742d18674954307f))
+
 # [1.10.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.9.0...v1.10.0) (2025-08-28)
 
 
