@@ -1,3 +1,10 @@
+# [1.4.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.3.0...v1.4.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* remove deprecated datalab component from Google Cloud SDK ([4ff2f00](https://github.com/liamhelmer/claude-flow-dagger/commit/4ff2f00f351045b16ee386cf7435833bc1975203))
+
 # [1.3.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.2.0...v1.3.0) (2025-08-28)
 
 
