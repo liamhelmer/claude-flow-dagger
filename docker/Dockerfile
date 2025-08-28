@@ -83,26 +83,21 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
     gpg --dearmor -o /usr/share/keyrings/cloud.google.gpg && \
     apt-get update && \
-    apt-get install -y google-cloud-cli && \
-    gcloud components install \
-        alpha \
-        beta \
-        app-engine-go \
-        app-engine-java \
-        app-engine-python \
-        app-engine-python-extras \
-        bigtable \
-        cbt \
-        cloud-build-local \
-        cloud-datastore-emulator \
-        cloud-firestore-emulator \
-        cloud-spanner-emulator \
-        cloud-sql-proxy \
-        gke-gcloud-auth-plugin \
+    apt-get install -y \
+        google-cloud-cli \
+        google-cloud-cli-app-engine-go \
+        google-cloud-cli-app-engine-java \
+        google-cloud-cli-app-engine-python \
+        google-cloud-cli-app-engine-python-extras \
+        google-cloud-cli-bigtable-emulator \
+        google-cloud-cli-cbt \
+        google-cloud-cli-cloud-build-local \
+        google-cloud-cli-datastore-emulator \
+        google-cloud-cli-firestore-emulator \
+        google-cloud-cli-spanner-emulator \
+        google-cloud-cli-gke-gcloud-auth-plugin \
         kubectl \
-        kustomize \
-        local-extract \
-        pubsub-emulator \
+        google-cloud-cli-pubsub-emulator \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # AWS CLI v2
