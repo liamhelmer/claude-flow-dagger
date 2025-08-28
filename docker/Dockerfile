@@ -189,7 +189,7 @@ RUN apt-get update && \
         ripgrep \
         fd-find \
         bat \
-        exa \
+        eza \
         fzf \
         tmux \
         neovim \
