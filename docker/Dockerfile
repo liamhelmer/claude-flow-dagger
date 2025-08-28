@@ -144,14 +144,8 @@ FROM database-tools AS claude-tools
 ARG CLAUDE_FLOW_VERSION=2.0.0-alpha.101
 RUN npm install -g claude-flow@${CLAUDE_FLOW_VERSION}
 
-# Install MCP servers
-RUN npm install -g \
-    @modelcontextprotocol/server-filesystem \
-    @modelcontextprotocol/server-git \
-    @modelcontextprotocol/server-github \
-    @modelcontextprotocol/server-postgresql \
-    @modelcontextprotocol/server-memory \
-    @modelcontextprotocol/server-brave-search
+# Note: MCP servers would be installed here once they become available on npm
+# Currently these packages are not published to npm registry
 
 # Stage 6: Additional development tools
 FROM claude-tools AS dev-tools
