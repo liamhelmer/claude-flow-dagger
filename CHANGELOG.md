@@ -1,3 +1,27 @@
+# [2.0.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.11.0...v2.0.0) (2025-08-28)
+
+
+### Code Refactoring
+
+* complete Docker-based Dagger module implementation ([ff74cc3](https://github.com/liamhelmer/claude-flow-dagger/commit/ff74cc333380c71c25454204280b0fac324b8c0b))
+
+
+### BREAKING CHANGES
+
+* Completely refactored to use Docker container for all operations
+
+- Simplified architecture to use Docker container for all claude-flow operations
+- Removed complex module structure in favor of single unified interface
+- Updated all dependencies to latest major versions (Dagger 0.18.16, etc)
+- Added comprehensive LLM configuration passthrough from Dagger environment
+- All 50+ CLI commands now available through container execution
+- Added detailed usage examples and updated documentation
+- Improved type safety with latest TypeScript features
+- Optimized for CI/CD with non-interactive mode by default
+
+The module now runs claude-flow entirely within the published Docker container,
+ensuring consistency across environments and eliminating dependency issues.
+
 # [1.11.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.10.0...v1.11.0) (2025-08-28)
 
 
