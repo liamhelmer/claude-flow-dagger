@@ -98,7 +98,6 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
         cloud-firestore-emulator \
         cloud-spanner-emulator \
         cloud-sql-proxy \
-        datalab \
         gke-gcloud-auth-plugin \
         kubectl \
         kustomize \
