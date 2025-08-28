@@ -1,3 +1,10 @@
+# [1.7.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.6.0...v1.7.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* remove non-existent @anthropic/claude-cli package ([94fb3fc](https://github.com/liamhelmer/claude-flow-dagger/commit/94fb3fcb073fffc6ce05fd9171b01943fab2f8b7))
+
 # [1.6.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.5.0...v1.6.0) (2025-08-28)
 
 
