@@ -50,18 +50,16 @@ RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     npm install -g npm@latest yarn pnpm && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Python 3.13
-RUN add-apt-repository ppa:deadsnakes/ppa -y && \
-    apt-get update && \
+# Python 3 (Latest available in Ubuntu 24.04)
+RUN apt-get update && \
     apt-get install -y \
-        python3.13 \
-        python3.13-dev \
-        python3.13-venv \
+        python3 \
+        python3-dev \
+        python3-venv \
         python3-pip \
         pipx \
-    && update-alternatives --install /usr/bin/python3 python3 /usr/bin/python3.13 1 \
-    && update-alternatives --install /usr/bin/python python /usr/bin/python3.13 1 \
-    && python3 -m pip install --upgrade pip setuptools wheel \
+    && update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
+    && python3 -m pip install --upgrade --break-system-packages pip setuptools \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Go 1.23.1
@@ -247,10 +245,10 @@ ENV DOCKER_HOST=unix:///var/run/docker.sock
 # Dagger LLM Integration Support
 # These will be overridden by actual values from Dagger engine at runtime
 ENV DAGGER_LLM_INTEGRATION=true
-ENV ANTHROPIC_BASE_URL=${ANTHROPIC_BASE_URL:-}
-ENV ANTHROPIC_AUTH_TOKEN=${ANTHROPIC_AUTH_TOKEN:-}
-ENV DAGGER_ANTHROPIC_BASE_URL=${DAGGER_ANTHROPIC_BASE_URL:-}
-ENV DAGGER_ANTHROPIC_AUTH_TOKEN=${DAGGER_ANTHROPIC_AUTH_TOKEN:-}
+ENV ANTHROPIC_BASE_URL=""
+ENV ANTHROPIC_AUTH_TOKEN=""
+ENV DAGGER_ANTHROPIC_BASE_URL=""
+ENV DAGGER_ANTHROPIC_AUTH_TOKEN=""
 
 # Copy configuration files
 COPY --chown=claude:claude docker/config/claude-flow-config.json /home/claude/.config/claude-flow/config.json
