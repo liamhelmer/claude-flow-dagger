@@ -1,0 +1,59 @@
+{
+  "version": "2.0.0-alpha.101",
+  "environment": "production",
+  "nonInteractive": true,
+  "llm": {
+    "provider": "anthropic",
+    "model": "claude-3-opus-20240229",
+    "temperature": 0.7,
+    "maxTokens": 4096,
+    "auth": {
+      "useEnvironment": true,
+      "envVars": {
+        "apiKey": ["ANTHROPIC_AUTH_TOKEN", "DAGGER_ANTHROPIC_AUTH_TOKEN", "CLAUDE_API_KEY"],
+        "baseUrl": ["ANTHROPIC_BASE_URL", "DAGGER_ANTHROPIC_BASE_URL", "CLAUDE_BASE_URL"]
+      }
+    }
+  },
+  "dagger": {
+    "integration": true,
+    "autoDetect": true,
+    "passthrough": {
+      "enabled": true,
+      "variables": [
+        "ANTHROPIC_BASE_URL",
+        "ANTHROPIC_AUTH_TOKEN",
+        "DAGGER_ANTHROPIC_BASE_URL",
+        "DAGGER_ANTHROPIC_AUTH_TOKEN"
+      ]
+    }
+  },
+  "features": {
+    "sparc": true,
+    "swarm": true,
+    "neural": true,
+    "memory": true,
+    "github": true,
+    "autoAgent": true,
+    "smartSpawn": true
+  },
+  "memory": {
+    "provider": "redis",
+    "connectionUrl": "redis://redis:6379",
+    "ttl": 3600,
+    "compression": false,
+    "encryption": false
+  },
+  "logging": {
+    "level": "info",
+    "format": "json",
+    "destination": "console"
+  },
+  "performance": {
+    "timeout": 30000,
+    "retries": 3,
+    "parallelExecution": true,
+    "maxWorkers": 10,
+    "batchSize": 5
+  }
+}

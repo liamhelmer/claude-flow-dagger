@@ -1,0 +1,437 @@
+# ================================
+# Claude & Claude Flow
+# ================================
+
+# Claude configuration and data
+.claude/
+.claude-code/
+.claude-cache/
+.claude-logs/
+.claude-session/
+.claude-history/
+claude-*.log
+claude-*.tmp
+*.claude.backup
+.anthropic/
+
+# Claude Flow specific
+.claude-flow/
+claude-flow-data/
+claude-flow-cache/
+claude-flow-logs/
+claude-flow-*.log
+claude-flow-*.tmp
+.claude-flow-config/
+.claude-flow-session/
+.claude-flow-history/
+.claude-flow-state/
+claude-flow-output/
+claude-flow-artifacts/
+
+# MCP (Model Context Protocol) files
+.mcp/
+mcp-servers/
+mcp-cache/
+mcp-logs/
+*.mcp.log
+*.mcp.tmp
+
+# ================================
+# Hive Mind & Swarm
+# ================================
+
+# Hive Mind files
+.hivemind/
+hivemind-data/
+hivemind-state/
+hivemind-logs/
+hivemind-*.log
+hivemind-*.tmp
+hive-memory/
+hive-consensus/
+hive-coordination/
+queen-state/
+worker-states/
+collective-intelligence/
+
+# Swarm files
+.swarm/
+swarm-data/
+swarm-state/
+swarm-logs/
+swarm-*.log
+swarm-*.tmp
+swarm-coordination/
+swarm-topology/
+agent-states/
+agent-logs/
+agent-*.log
+consensus-data/
+byzantine-logs/
+raft-logs/
+gossip-data/
+
+# Agent specific files
+.agents/
+agent-memory/
+agent-models/
+agent-checkpoints/
+agent-artifacts/
+*.agent.state
+*.agent.log
+
+# ================================
+# SPARC Methodology
+# ================================
+
+# SPARC files
+.sparc/
+sparc-output/
+sparc-artifacts/
+sparc-logs/
+sparc-*.log
+specification-output/
+pseudocode-output/
+architecture-output/
+refinement-output/
+completion-output/
+
+# ================================
+# Memory & Neural
+# ================================
+
+# Memory stores
+memory-store/
+memory-cache/
+memory-backup/
+*.memory.db
+*.memory.snapshot
+distributed-memory/
+redis-dump.rdb
+appendonly.aof
+
+# Neural models and data
+neural-models/
+neural-checkpoints/
+neural-output/
+neural-logs/
+*.model
+*.checkpoint
+*.weights
+training-data/
+validation-data/
+predictions/
+
+# ================================
+# Temporary Files
+# ================================
+
+# General temp files
+tmp/
+temp/
+.tmp/
+.temp/
+*.tmp
+*.temp
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+Desktop.ini
+
+# Session and state files
+.session/
+.state/
+*.session
+*.state
+*.lock
+*.pid
+
+# Cache directories
+.cache/
+cache/
+*.cache
+
+# Log files
+logs/
+*.log
+*.log.*
+*.out
+*.err
+error.log
+debug.log
+info.log
+
+# ================================
+# Node.js & TypeScript
+# ================================
+
+# Dependencies
+node_modules/
+.npm/
+.pnp.*
+.yarn/
+
+# Build outputs
+dist/
+build/
+out/
+*.tsbuildinfo
+
+# Test coverage
+coverage/
+.nyc_output/
+*.lcov
+
+# Environment files
+.env
+.env.local
+.env.*.local
+.env.development
+.env.test
+.env.production
+
+# ================================
+# Docker & Dagger
+# ================================
+
+# Docker
+*.tar
+*.tar.gz
+docker/config/*.json
+!docker/config/*.example.json
+!docker/config/claude-flow-config.json
+docker-compose.override.yml
+.dockerignore.local
+
+# Dagger
+.dagger/
+dagger.lock
+dagger-cache/
+dagger-engine/
+
+# ================================
+# IDE & Editors
+# ================================
+
+# VS Code
+.vscode/
+*.code-workspace
+.history/
+
+# IntelliJ/WebStorm
+.idea/
+*.iml
+*.ipr
+*.iws
+
+# Vim
+*.vim
+.*.vim
+Session.vim
+
+# Emacs
+*~
+\#*\#
+/.emacs.desktop
+/.emacs.desktop.lock
+*.elc
+
+# ================================
+# Security & Secrets
+# ================================
+
+# Keys and certificates
+*.key
+*.pem
+*.crt
+*.cert
+*.p12
+*.pfx
+secrets/
+vault-data/
+.secrets/
+
+# Credentials
+credentials/
+.credentials/
+*.credentials
+
+# API keys (extra safety)
+*api-key*
+*apikey*
+*auth-token*
+*authtoken*
+!*.example
+!*.template
+
+# ================================
+# Package Files
+# ================================
+
+# Archives
+*.zip
+*.gz
+*.tar
+*.rar
+*.7z
+
+# Package files
+*.tgz
+*.deb
+*.rpm
+*.dmg
+*.exe
+*.msi
+
+# ================================
+# Backup Files
+# ================================
+
+*.backup
+*.bak
+*.old
+*.orig
+*.previous
+backup/
+backups/
+
+# ================================
+# OS Files
+# ================================
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+Icon
+._*
+.DocumentRevisions-V100
+.fseventsd
+.Spotlight-V100
+.TemporaryItems
+.Trashes
+.VolumeIcon.icns
+.com.apple.timemachine.donotpresent
+.AppleDB
+.AppleDesktop
+Network Trash Folder
+Temporary Items
+.apdisk
+
+# Windows
+Thumbs.db
+Thumbs.db:encryptable
+ehthumbs.db
+ehthumbs_vista.db
+*.stackdump
+[Dd]esktop.ini
+$RECYCLE.BIN/
+*.lnk
+
+# Linux
+.directory
+.Trash-*
+.nfs*
+
+# ================================
+# Project Specific
+# ================================
+
+# Test results
+test-results/
+test-output/
+junit.xml
+test-report.html
+
+# Benchmarks
+benchmark-results/
+perf-results/
+*.benchmark
+
+# Documentation builds
+docs/_build/
+docs/.docusaurus/
+site/
+
+# Database files
+*.db
+*.sqlite
+*.sqlite3
+data/
+
+# Python (if mixed project)
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+venv/
+ENV/
+pip-log.txt
+
+# ================================
+# CI/CD
+# ================================
+
+# GitHub Actions
+.github/actions/*/node_modules/
+
+# GitLab CI
+.gitlab-ci-local/
+
+# Jenkins
+jenkins-home/
+
+# ================================
+# Monitoring & Analytics
+# ================================
+
+# Metrics
+metrics/
+*.metrics
+
+# Traces
+traces/
+*.trace
+
+# Profiling
+profiles/
+*.prof
+*.heap
+
+# ================================
+# Custom Patterns
+# ================================
+
+# Ignore all dot files except specific ones
+.*
+!.gitignore
+!.gitattributes
+!.editorconfig
+!.eslintrc*
+!.prettierrc*
+!.dockerignore
+!.env.example
+!.github
+!.gitlab-ci.yml
+!.travis.yml
+
+# Keep example and template files
+!*.example
+!*.example.*
+!*.template
+!*.template.*
+!examples/
+
+# Keep documentation
+!README.md
+!LICENSE
+!CONTRIBUTING.md
+!CHANGELOG.md
+!docs/
+
+# Keep configuration samples
+!config.example.*
+!settings.example.*

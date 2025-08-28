@@ -1,0 +1,190 @@
+# Git
+.git
+.gitignore
+.gitattributes
+.gitmodules
+
+# Node.js
+node_modules/
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+.pnpm-debug.log*
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+build/
+develop-eggs/
+dist/
+downloads/
+eggs/
+.eggs/
+lib/
+lib64/
+parts/
+sdist/
+var/
+wheels/
+*.egg-info/
+.installed.cfg
+*.egg
+MANIFEST
+.env
+.venv
+env/
+venv/
+ENV/
+env.bak/
+venv.bak/
+.pytest_cache/
+.coverage
+htmlcov/
+.tox/
+.nox/
+
+# Go
+/vendor/
+*.exe
+*.exe~
+*.dll
+*.so
+*.dylib
+*.test
+*.out
+/bin/
+/pkg/
+
+# Rust
+/target/
+**/*.rs.bk
+Cargo.lock
+
+# IDE & Editors
+.vscode/
+.idea/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
+logs/
+
+# Runtime data
+pids/
+*.pid
+*.seed
+*.pid.lock
+
+# Coverage directory used by tools like istanbul
+coverage/
+
+# Temporary folders
+tmp/
+temp/
+
+# OS generated files
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
+Thumbs.db
+
+# Docker
+.docker/
+Dockerfile*
+docker-compose*
+.dockerignore
+
+# Cloud provider configs (security)
+.aws/
+.gcloud/
+.azure/
+credentials.json
+service-account-key.json
+
+# Environment files
+.env
+.env.local
+.env.development
+.env.test
+.env.production
+.env.staging
+
+# Security
+*.pem
+*.p12
+*.key
+*.crt
+*.csr
+secrets/
+private/
+
+# Backup files
+*.bak
+*.backup
+*.orig
+
+# Archive files
+*.tar
+*.zip
+*.rar
+*.7z
+*.gz
+*.bz2
+
+# Documentation (exclude from build context)
+docs/
+*.md
+README*
+CHANGELOG*
+LICENSE*
+
+# Test files
+test/
+tests/
+__tests__/
+*.test.js
+*.spec.js
+*.test.py
+*.spec.py
+
+# Build artifacts
+build/
+dist/
+out/
+target/
+
+# Cache directories
+.cache/
+.npm/
+.yarn/
+.pnpm/
+.next/
+.nuxt/
+.vuepress/dist/
+
+# Editor directories and files
+.vscode/
+!.vscode/extensions.json
+.idea
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Miscellaneous
+*.tgz
+*.tar.gz

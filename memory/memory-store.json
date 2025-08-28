@@ -1,0 +1,28 @@
+{
+  "default": [
+    {
+      "key": "hive/tests/docker-tests",
+      "value": "{\\validation\\: {\\image_build\\: \\multi-stage Docker build validation\\, \\tools_verified\\: [\\node22\\, \\python3.13\\, \\go1.23\\, \\rust\\, \\gcloud\\, \\aws\\, \\azure\\, \\vault\\, \\terraform\\, \\dagger\\, \\postgresql\\, \\mysql\\, \\redis\\, \\mongodb\\, \\claude-flow-v2.0.0-alpha.101\\], \\security_tools\\: [\\bandit\\, \\safety\\, \\snyk\\, \\trivy\\], \\mcp_servers\\: [\\filesystem\\, \\git\\, \\github\\, \\postgres\\, \\memory\\], \\health_check\\: \\comprehensive health validation\\, \\environment\\: {\\working_dir\\: \\/workspace\\, \\config_dirs\\: [\\/root/.config/claude-flow\\, \\/root/.cache/claude-flow\\, \\/root/.config/mcp\\]}}, \\test_structure\\: {\\image_validation\\: \\complete Docker image testing\\, \\security_scanning\\: \\Trivy and Snyk vulnerability scans\\, \\performance_checks\\: \\container startup and resource usage\\, \\tool_verification\\: \\all CLI tools functional verification\\}, \\status\\: \\Docker validation suite complete\\}",
+      "namespace": "default",
+      "timestamp": 1756403731100
+    },
+    {
+      "key": "hive/tests/coverage",
+      "value": "{\\coverage_requirements\\: {\\lines\\: \\ functionality testing\\, \\files\\: 2, \\estimated_tests\\: 45, \\coverage_target\\: \\90%\\}, \\integration\\: {\\description\\: \\Container-based workflow testing\\, \\files\\: 1, \\estimated_tests\\: 12, \\timeout\\: \\5 minutes\\}, \\docker\\: {\\description\\: \\Complete Docker image validation\\, \\files\\: 1, \\estimated_tests\\: 25, \\timeout\\: \\15 minutes\\}, \\security\\: {\\description\\: \\Vulnerability and security scanning\\, \\files\\: 1, \\tools\\: [\\trivy\\, \\snyk\\, \\bandit\\], \\timeout\\: \\10 minutes\\}, \\performance\\: {\\description\\: \\Benchmarking and resource monitoring\\, \\files\\: 1, \\metrics\\: [\\startup_time\\, \\memory_usage\\, \\concurrent_ops\\], \\timeout\\: \\10 minutes\\}, \\e2e\\: {\\description\\: \\End-to-end workflow validation\\, \\files\\: 1, \\scenarios\\: [\\sparc_tdd\\, \\swarm_orchestration\\, \\memory_integration\\], \\timeout\\: \\20 minutes\\}, \\cicd\\: {\\description\\: \\CI/CD pipeline integration\\, \\files\\: 1, \\validations\\: [\\build\\, \\test\\, \\deploy\\, \\security\\], \\timeout\\: \\10 minutes\\}}, \\total_estimated\\: {\\test_files\\: 8, \\test_cases\\: 120, \\total_runtime\\: \\75 minutes\\}, \\reporting\\: {\\formats\\: [\\json\\, \\lcov\\, \\html\\], \\artifacts\\: [\\coverage-report\\, \\security-scan\\, \\performance-metrics\\, \\e2e-results\\]}, \\status\\: \\comprehensive testing framework established\\}",
+      "namespace": "default",
+      "timestamp": 1756403733463
+    },
+    {
+      "key": "hive/tests/module-tests",
+      "value": "{\"framework\": \"jest\", \"suites\": {\"unit\": {\"files\": [\"types.test.ts\", \"core.test.ts\"], \"coverage\": {\"target\": \"80%\", \"categories\": [\"lines\", \"functions\", \"branches\", \"statements\"]}, \"timeout\": 120000, \"description\": \"Unit tests for core Dagger module functionality\"}, \"integration\": {\"files\": [\"workflow.test.ts\"], \"timeout\": 300000, \"description\": \"Integration tests with real containers\", \"requirements\": [\"INTEGRATION_TESTS=true\"]}, \"performance\": {\"files\": [\"benchmarks.test.ts\"], \"timeout\": 600000, \"description\": \"Performance and benchmarking tests\", \"metrics\": {\"container_startup\": \"<10s\", \"memory_usage\": \"<500MB\", \"batch_operations\": \"<20s\"}}}, \"test_count\": {\"unit_tests\": 45, \"integration_tests\": 12, \"total_assertions\": 150}, \"status\": \"comprehensive test suite created\"}",
+      "namespace": "default",
+      "timestamp": 1756403749701
+    },
+    {
+      "key": "hive/tests/coverage-metrics",
+      "value": "{\"coverage_requirements\": {\"lines\": \">80%\", \"functions\": \">80%\", \"branches\": \">75%\", \"statements\": \">80%\"}, \"test_categories\": {\"unit\": {\"description\": \"Core functionality testing\", \"files\": 2, \"estimated_tests\": 45, \"coverage_target\": \"90%\"}, \"integration\": {\"description\": \"Container-based workflow testing\", \"files\": 1, \"estimated_tests\": 12, \"timeout\": \"5 minutes\"}, \"docker\": {\"description\": \"Complete Docker image validation\", \"files\": 1, \"estimated_tests\": 25, \"timeout\": \"15 minutes\"}, \"security\": {\"description\": \"Vulnerability and security scanning\", \"files\": 1, \"tools\": [\"trivy\", \"snyk\", \"bandit\"], \"timeout\": \"10 minutes\"}, \"performance\": {\"description\": \"Benchmarking and resource monitoring\", \"files\": 1, \"metrics\": [\"startup_time\", \"memory_usage\", \"concurrent_ops\"], \"timeout\": \"10 minutes\"}, \"e2e\": {\"description\": \"End-to-end workflow validation\", \"files\": 1, \"scenarios\": [\"sparc_tdd\", \"swarm_orchestration\", \"memory_integration\"], \"timeout\": \"20 minutes\"}, \"cicd\": {\"description\": \"CI/CD pipeline integration\", \"files\": 1, \"validations\": [\"build\", \"test\", \"deploy\", \"security\"], \"timeout\": \"10 minutes\"}}, \"total_estimated\": {\"test_files\": 8, \"test_cases\": 120, \"total_runtime\": \"75 minutes\"}, \"reporting\": {\"formats\": [\"json\", \"lcov\", \"html\"], \"artifacts\": [\"coverage-report\", \"security-scan\", \"performance-metrics\", \"e2e-results\"]}, \"status\": \"comprehensive testing framework established\"}",
+      "namespace": "default",
+      "timestamp": 1756403753173
+    }
+  ]
+}
