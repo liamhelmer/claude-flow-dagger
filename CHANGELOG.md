@@ -1,3 +1,10 @@
+# [1.5.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.4.0...v1.5.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* use apt packages for Google Cloud SDK components ([4073c94](https://github.com/liamhelmer/claude-flow-dagger/commit/4073c9420b7a871eaccbb53329317dee435cb453))
+
 # [1.4.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.3.0...v1.4.0) (2025-08-28)
 
 
