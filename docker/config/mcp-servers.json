@@ -1,0 +1,73 @@
+{
+  "version": "1.0.0",
+  "servers": {
+    "filesystem": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-filesystem"],
+      "env": {},
+      "config": {
+        "rootPath": "/workspace"
+      }
+    },
+    "git": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-git"],
+      "env": {},
+      "config": {
+        "repositories": ["/workspace"]
+      }
+    },
+    "github": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-github"],
+      "env": {
+        "GITHUB_TOKEN": "${GITHUB_TOKEN}"
+      },
+      "config": {}
+    },
+    "postgresql": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-postgresql"],
+      "env": {
+        "DATABASE_URL": "${DATABASE_URL}"
+      },
+      "config": {}
+    },
+    "memory": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-memory"],
+      "env": {},
+      "config": {
+        "maxEntries": 1000
+      }
+    },
+    "brave-search": {
+      "command": "npx",
+      "args": ["@modelcontextprotocol/server-brave-search"],
+      "env": {
+        "BRAVE_API_KEY": "${BRAVE_API_KEY}"
+      },
+      "config": {}
+    },
+    "claude-flow": {
+      "command": "npx",
+      "args": ["claude-flow", "mcp", "start"],
+      "env": {
+        "ANTHROPIC_AUTH_TOKEN": "${ANTHROPIC_AUTH_TOKEN}",
+        "ANTHROPIC_BASE_URL": "${ANTHROPIC_BASE_URL}",
+        "CLAUDE_API_KEY": "${CLAUDE_API_KEY}"
+      },
+      "config": {
+        "autoStart": true,
+        "features": {
+          "sparc": true,
+          "swarm": true,
+          "neural": true,
+          "memory": true,
+          "github": true
+        }
+      }
+    }
+  },
+  "defaultServer": "claude-flow"
+}
