@@ -77,7 +77,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # Stage 3: Cloud SDKs and tools
 FROM runtimes AS cloud-tools
 
-# Google Cloud SDK with available components
+# Google Cloud SDK (basic installation)
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
     tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
@@ -85,17 +85,8 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
     apt-get update && \
     apt-get install -y \
         google-cloud-cli \
-        google-cloud-cli-app-engine-go \
-        google-cloud-cli-app-engine-java \
-        google-cloud-cli-app-engine-python \
-        google-cloud-cli-app-engine-python-extras \
-        google-cloud-cli-bigtable-emulator \
-        google-cloud-cli-cbt \
-        google-cloud-cli-datastore-emulator \
-        google-cloud-cli-firestore-emulator \
         google-cloud-cli-gke-gcloud-auth-plugin \
         kubectl \
-        google-cloud-cli-pubsub-emulator \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # AWS CLI v2
@@ -181,20 +172,14 @@ RUN curl -fsSL https://cli.github.com/packages/githubcli-archive-keyring.gpg | \
     apt-get install -y gh && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Development utilities
+# Development utilities (essential only)
 RUN apt-get update && \
     apt-get install -y \
         ripgrep \
         fd-find \
-        bat \
-        eza \
         fzf \
         tmux \
-        neovim \
-        httpie \
         tree \
-        ncdu \
-        tldr \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Kubernetes tools
