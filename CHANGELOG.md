@@ -1,3 +1,10 @@
+# [1.1.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.0.0...v1.1.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* add missing MCP servers configuration for Docker build ([5591cb5](https://github.com/liamhelmer/claude-flow-dagger/commit/5591cb5a3cb697d2b54753b0824f8ab969c3b0bd))
+
 # 1.0.0 (2025-08-28)
 
 
