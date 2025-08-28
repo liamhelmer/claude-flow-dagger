@@ -1,3 +1,10 @@
+# [1.9.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.8.0...v1.9.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* replace exa with eza for Ubuntu 24.04 compatibility ([4f87af0](https://github.com/liamhelmer/claude-flow-dagger/commit/4f87af0d4b3af71eb411b111f334cf599244fcab))
+
 # [1.8.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.7.0...v1.8.0) (2025-08-28)
 
 
