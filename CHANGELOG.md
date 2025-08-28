@@ -1,3 +1,10 @@
+# [1.8.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.7.0...v1.8.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* remove unavailable MCP server packages ([1d075bd](https://github.com/liamhelmer/claude-flow-dagger/commit/1d075bdf2af94a86183b72571b50999c1105201a))
+
 # [1.7.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.6.0...v1.7.0) (2025-08-28)
 
 
