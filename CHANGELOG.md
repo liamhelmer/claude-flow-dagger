@@ -1,3 +1,10 @@
+# [1.6.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.5.0...v1.6.0) (2025-08-28)
+
+
+### Bug Fixes
+
+* use jammy repository for MongoDB on Ubuntu 24.04 ([9f55d37](https://github.com/liamhelmer/claude-flow-dagger/commit/9f55d3744daded962a0c3285eb7a3c509406e027))
+
 # [1.5.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.4.0...v1.5.0) (2025-08-28)
 
 
