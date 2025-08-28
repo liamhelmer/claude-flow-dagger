@@ -1,213 +1,577 @@
 /**
  * Claude Flow Dagger Module
- * A comprehensive Dagger wrapper for claude-flow CLI with non-interactive mode support
+ * 
+ * This module provides a complete Dagger integration for Claude Flow CLI,
+ * using the Docker container to run all commands with full CLI capabilities
+ * and automatic LLM configuration passthrough from Dagger.
  */
 
-import { connect, Container, Directory, Secret } from '@dagger.io/dagger';
-import { ClaudeFlowConfig, validateConfig } from './config';
-import { SparcModule } from './dagger/sparc';
-import { SwarmModule } from './dagger/swarm';
-import { MemoryModule } from './dagger/memory';
-import { NeuralModule } from './dagger/neural';
-import { GitHubModule } from './dagger/github';
-import { UtilsModule } from './dagger/utils';
-import { ClaudeFlowDagger } from './dagger/core';
+import { dag, Container, Directory, object, func, field } from "@dagger.io/dagger";
 
-export * from './types';
-export * from './config';
-export * from './dagger/core';
-export * from './dagger/sparc';
-export * from './dagger/swarm';
-export * from './dagger/memory';
-export * from './dagger/neural';
-export * from './dagger/github';
-export * from './dagger/utils';
+// Type definitions
+export interface ClaudeFlowConfig {
+  env?: Record<string, string>;
+  secrets?: Record<string, string>;
+  mounts?: Array<{ source: Directory; target: string }>;
+  workdir?: string;
+  labels?: Record<string, string>;
+  nonInteractive?: boolean;
+  apiKey?: string;
+  baseUrl?: string;
+}
 
-/**
- * Main entry point for the Claude Flow Dagger module
- */
-export class ClaudeFlow {
-  private client: any;
-  private container: Container;
-  private config: ClaudeFlowConfig;
-  
-  // Module instances
-  public sparc: SparcModule;
-  public swarm: SwarmModule;
-  public memory: MemoryModule;
-  public neural: NeuralModule;
-  public github: GitHubModule;
-  public utils: UtilsModule;
-  public core: ClaudeFlowDagger;
+export interface DaggerLLMConfig {
+  ANTHROPIC_BASE_URL?: string;
+  ANTHROPIC_AUTH_TOKEN?: string;
+  DAGGER_ANTHROPIC_BASE_URL?: string;
+  DAGGER_ANTHROPIC_AUTH_TOKEN?: string;
+  CLAUDE_API_KEY?: string;
+  CLAUDE_BASE_URL?: string;
+  OPENAI_API_KEY?: string;
+  OPENAI_BASE_URL?: string;
+}
 
-  constructor(config?: Partial<ClaudeFlowConfig>) {
-    this.config = validateConfig(config);
-  }
+@object()
+export class ClaudeFlowDagger {
+  @field()
+  dockerImage: string = "ghcr.io/liamhelmer/claude-flow-dagger:latest";
+
+  @field()
+  version: string = "2.0.0-alpha.101";
 
   /**
-   * Initialize the Dagger client and modules
+   * Creates a configured Claude Flow container with LLM settings
+   * automatically passed through from Dagger environment
    */
-  async init(): Promise<void> {
-    // Connect to Dagger with optional configuration
-    this.client = await connect({
-      // Log level can be set via DAGGER_LOG_LEVEL env var
-      logOutput: process.stderr
-    });
-    
-    // Create base container with claude-flow
-    this.container = await this.createBaseContainer();
-    
-    // Initialize modules with Dagger LLM configuration automatically applied
-    this.core = new ClaudeFlowDagger(this.container, this.config);
-    
-    // Get the configured container from core module for other modules
-    const configuredContainer = this.core.getContainer();
-    
-    this.sparc = new SparcModule(configuredContainer, this.config);
-    this.swarm = new SwarmModule(configuredContainer, this.config);
-    this.memory = new MemoryModule(configuredContainer, this.config);
-    this.neural = new NeuralModule(configuredContainer, this.config);
-    this.github = new GitHubModule(configuredContainer, this.config);
-    this.utils = new UtilsModule(configuredContainer, this.config);
-  }
-
-  /**
-   * Create the base container with claude-flow installed
-   * Automatically inherits Dagger LLM configuration from engine
-   */
-  private async createBaseContainer(): Container {
-    let container = this.client
+  @func()
+  async container(
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<Container> {
+    // Get the base container
+    let container = dag
       .container()
-      .from('node:22-alpine')
-      .withExec(['apk', 'add', '--no-cache', 'git', 'python3', 'make', 'g++', 'curl', 'bash'])
-      .withExec(['npm', 'install', '-g', 'claude-flow@2.0.0-alpha.101'])
-      .withWorkdir('/workspace');
-    
-    // Pass through Dagger LLM configuration if available
-    const daggerLLMEnvVars = this.getDaggerLLMEnvironment();
-    for (const [key, value] of Object.entries(daggerLLMEnvVars)) {
-      if (value) {
-        container = container.withEnvVariable(key, value);
-      }
+      .from(this.dockerImage);
+
+    // Configure LLM environment variables from Dagger
+    container = this.configureLLMEnvironment(container);
+
+    // Mount workspace if provided
+    if (workspace) {
+      container = container.withMountedDirectory("/workspace", workspace);
+      container = container.withWorkdir("/workspace");
+    }
+
+    // Apply custom configuration if provided
+    if (config) {
+      container = this.applyConfiguration(container, config);
+    }
+
+    // Set non-interactive mode by default
+    if (config?.nonInteractive !== false) {
+      container = container.withEnvVariable("CLAUDE_FLOW_NON_INTERACTIVE", "true");
     }
     
     return container;
   }
 
   /**
-   * Get Dagger LLM environment variables from the host
+   * Run a claude-flow command with all CLI capabilities
    */
-  private getDaggerLLMEnvironment(): Record<string, string | undefined> {
-    return {
-      // Primary Anthropic configuration
-      ANTHROPIC_BASE_URL: process.env.ANTHROPIC_BASE_URL,
-      ANTHROPIC_AUTH_TOKEN: process.env.ANTHROPIC_AUTH_TOKEN,
-      // Dagger-specific configuration
-      DAGGER_ANTHROPIC_BASE_URL: process.env.DAGGER_ANTHROPIC_BASE_URL,
-      DAGGER_ANTHROPIC_AUTH_TOKEN: process.env.DAGGER_ANTHROPIC_AUTH_TOKEN,
-      // Legacy Claude configuration
-      CLAUDE_BASE_URL: process.env.CLAUDE_BASE_URL,
-      CLAUDE_API_KEY: process.env.CLAUDE_API_KEY || this.config.apiKey
-    };
-  }
-
-  /**
-   * Execute a claude-flow command
-   */
-  async execute(command: string, args: string[] = []): Promise<string> {
-    const result = await this.container
-      .withExec(['npx', 'claude-flow', command, ...args])
+  @func()
+  async run(
+    command: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    const container = await this.container(workspace, config);
+    
+    // Build the full command
+    const fullCommand = ["claude-flow", command, ...args];
+    
+    // Execute and return output
+    const result = await container
+      .withExec(fullCommand)
       .stdout();
     
     return result;
   }
 
   /**
-   * Run SPARC TDD workflow
+   * Execute SPARC methodology commands
    */
-  async runTdd(feature: string): Promise<string> {
-    return this.sparc.tdd(feature);
+  @func()
+  async sparc(
+    mode: string,
+    task: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("sparc", ["run", mode, task], workspace, config);
   }
 
   /**
-   * Initialize a swarm
+   * Execute swarm commands
    */
-  async initSwarm(topology: string, objective: string): Promise<string> {
-    return this.swarm.init(topology, objective);
+  @func()
+  async swarm(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("swarm", [action, ...args], workspace, config);
   }
 
   /**
-   * Store memory
+   * Execute agent commands
    */
-  async storeMemory(key: string, value: any): Promise<void> {
-    await this.memory.store(key, value);
+  @func()
+  async agent(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("agent", [action, ...args], workspace, config);
+  }
+
+  /**
+   * Execute memory commands
+   */
+  @func()
+  async memory(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("memory", [action, ...args], workspace, config);
+  }
+
+  /**
+   * Execute neural commands
+   */
+  @func()
+  async neural(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("neural", [action, ...args], workspace, config);
+  }
+
+  /**
+   * Execute GitHub integration commands
+   */
+  @func()
+  async github(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("github", [action, ...args], workspace, config);
+  }
+
+  /**
+   * Execute TDD workflow
+   */
+  @func()
+  async tdd(
+    feature: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("sparc", ["tdd", feature], workspace, config);
+  }
+
+  /**
+   * Execute pipeline commands
+   */
+  @func()
+  async pipeline(
+    task: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("sparc", ["pipeline", task], workspace, config);
+  }
+
+  /**
+   * Execute batch commands for parallel processing
+   */
+  @func()
+  async batch(
+    modes: string[],
+    task: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("sparc", ["batch", modes.join(","), task], workspace, config);
+  }
+
+  /**
+   * Execute MCP server commands
+   */
+  @func()
+  async mcp(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("mcp", [action, ...args], workspace, config);
+  }
+
+  /**
+   * Execute hooks commands
+   */
+  @func()
+  async hooks(
+    action: string,
+    args: string[] = [],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("hooks", [action, ...args], workspace, config);
+  }
+
+  /**
+   * Execute features detection
+   */
+  @func()
+  async features(
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("features", ["detect"], workspace, config);
+  }
+
+  /**
+   * Execute benchmark commands
+   */
+  @func()
+  async benchmark(
+    type: string = "all",
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("benchmark", ["run", type], workspace, config);
+  }
+
+  /**
+   * Get claude-flow version information
+   */
+  @func()
+  async getVersion(
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("--version", [], workspace, config);
+  }
+
+  /**
+   * Execute custom claude-flow command with full flexibility
+   */
+  @func()
+  async custom(
+    fullCommand: string[],
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    const container = await this.container(workspace, config);
+    
+    // Execute custom command
+    const result = await container
+      .withExec(["claude-flow", ...fullCommand])
+      .stdout();
+    
+    return result;
+  }
+
+  /**
+   * Build and push a custom Docker image with claude-flow
+   */
+  @func()
+  async buildImage(
+    registry: string,
+    tag: string = "latest",
+    workspace?: Directory
+  ): Promise<string> {
+    if (!workspace) {
+      throw new Error("Workspace directory is required for building images");
+    }
+
+    const container = dag
+      .container()
+      .build(workspace, { dockerfile: "docker/Dockerfile" });
+
+    const imageRef = `${registry}:${tag}`;
+    await container.publish(imageRef);
+
+    return `Successfully published image to ${imageRef}`;
+  }
+
+  /**
+   * Configure LLM environment variables from Dagger
+   */
+  private configureLLMEnvironment(container: Container): Container {
+    const llmVars = this.getDaggerLLMConfig();
+    
+    // Primary Anthropic configuration
+    if (llmVars.ANTHROPIC_BASE_URL) {
+      container = container.withEnvVariable("ANTHROPIC_BASE_URL", llmVars.ANTHROPIC_BASE_URL);
+    }
+    if (llmVars.ANTHROPIC_AUTH_TOKEN) {
+      container = container.withEnvVariable("ANTHROPIC_AUTH_TOKEN", llmVars.ANTHROPIC_AUTH_TOKEN);
+      container = container.withSecretVariable("ANTHROPIC_API_KEY", dag.setSecret("anthropic-key", llmVars.ANTHROPIC_AUTH_TOKEN));
+    }
+    
+    // Alternative Dagger-specific variables
+    if (llmVars.DAGGER_ANTHROPIC_BASE_URL) {
+      container = container.withEnvVariable("DAGGER_ANTHROPIC_BASE_URL", llmVars.DAGGER_ANTHROPIC_BASE_URL);
+    }
+    if (llmVars.DAGGER_ANTHROPIC_AUTH_TOKEN) {
+      container = container.withEnvVariable("DAGGER_ANTHROPIC_AUTH_TOKEN", llmVars.DAGGER_ANTHROPIC_AUTH_TOKEN);
+    }
+    
+    // Claude-specific variables
+    if (llmVars.CLAUDE_API_KEY) {
+      container = container.withSecretVariable("CLAUDE_API_KEY", dag.setSecret("claude-key", llmVars.CLAUDE_API_KEY));
+    }
+    if (llmVars.CLAUDE_BASE_URL) {
+      container = container.withEnvVariable("CLAUDE_BASE_URL", llmVars.CLAUDE_BASE_URL);
+    }
+
+    // OpenAI compatibility
+    if (llmVars.OPENAI_API_KEY) {
+      container = container.withSecretVariable("OPENAI_API_KEY", dag.setSecret("openai-key", llmVars.OPENAI_API_KEY));
+    }
+    if (llmVars.OPENAI_BASE_URL) {
+      container = container.withEnvVariable("OPENAI_BASE_URL", llmVars.OPENAI_BASE_URL);
+    }
+
+    return container;
+  }
+
+  /**
+   * Get Dagger LLM configuration from environment
+   */
+  private getDaggerLLMConfig(): DaggerLLMConfig {
+    return {
+      ANTHROPIC_BASE_URL: process.env.ANTHROPIC_BASE_URL,
+      ANTHROPIC_AUTH_TOKEN: process.env.ANTHROPIC_AUTH_TOKEN,
+      DAGGER_ANTHROPIC_BASE_URL: process.env.DAGGER_ANTHROPIC_BASE_URL,
+      DAGGER_ANTHROPIC_AUTH_TOKEN: process.env.DAGGER_ANTHROPIC_AUTH_TOKEN,
+      CLAUDE_API_KEY: process.env.CLAUDE_API_KEY,
+      CLAUDE_BASE_URL: process.env.CLAUDE_BASE_URL,
+      OPENAI_API_KEY: process.env.OPENAI_API_KEY,
+      OPENAI_BASE_URL: process.env.OPENAI_BASE_URL,
+    };
+  }
+
+  /**
+   * Apply custom configuration to container
+   */
+  private applyConfiguration(container: Container, config: ClaudeFlowConfig): Container {
+    // Apply environment variables
+    if (config.env) {
+      for (const [key, value] of Object.entries(config.env)) {
+        container = container.withEnvVariable(key, value);
+      }
+    }
+
+    // Apply secrets
+    if (config.secrets) {
+      for (const [key, value] of Object.entries(config.secrets)) {
+        container = container.withSecretVariable(key, dag.setSecret(key, value));
+      }
+    }
+
+    // Mount additional directories
+    if (config.mounts) {
+      for (const mount of config.mounts) {
+        container = container.withMountedDirectory(mount.target, mount.source);
+      }
+    }
+
+    // Set working directory
+    if (config.workdir) {
+      container = container.withWorkdir(config.workdir);
+    }
+
+    // Add labels
+    if (config.labels) {
+      for (const [key, value] of Object.entries(config.labels)) {
+        container = container.withLabel(key, value);
+      }
+    }
+
+    // Add API key if provided in config
+    if (config.apiKey) {
+      container = container.withSecretVariable("CLAUDE_API_KEY", dag.setSecret("api-key", config.apiKey));
+    }
+
+    // Add base URL if provided in config
+    if (config.baseUrl) {
+      container = container.withEnvVariable("CLAUDE_BASE_URL", config.baseUrl);
+    }
+
+    return container;
+  }
+
+  /**
+   * Execute interactive session (requires TTY support)
+   */
+  @func()
+  async interactive(
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<Container> {
+    const interactiveConfig = { ...config, nonInteractive: false };
+    let container = await this.container(workspace, interactiveConfig);
+    
+    // Set up for interactive use
+    container = container
+      .withEntrypoint(["/bin/bash", "-c"])
+      .withDefaultArgs(["claude-flow chat"]);
+    
+    return container;
+  }
+
+  /**
+   * Check health and readiness of claude-flow
+   */
+  @func()
+  async healthcheck(
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    const container = await this.container(workspace, config);
+    
+    // Run comprehensive health checks
+    const checks = [
+      ["claude-flow", "--version"],
+      ["claude-flow", "features", "detect"],
+      ["claude-flow", "swarm", "status"],
+      ["claude-flow", "memory", "usage"],
+    ];
+    
+    const results: string[] = [];
+    for (const check of checks) {
+      try {
+        const result = await container.withExec(check).stdout();
+        results.push(`✅ ${check.join(" ")}: ${result.trim()}`);
+      } catch (error) {
+        results.push(`❌ ${check.join(" ")}: Failed`);
+      }
+    }
+    
+    return results.join("\n");
+  }
+
+  /**
+   * Initialize swarm with specific topology
+   */
+  @func()
+  async swarmInit(
+    topology: string = "mesh",
+    objective: string = "general",
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("swarm", ["init", "--topology", topology, "--objective", objective], workspace, config);
+  }
+
+  /**
+   * Spawn agent with specific type
+   */
+  @func()
+  async agentSpawn(
+    agentType: string,
+    taskDescription: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("agent", ["spawn", "--type", agentType, "--task", taskDescription], workspace, config);
+  }
+
+  /**
+   * Store data in memory
+   */
+  @func()
+  async memoryStore(
+    key: string,
+    value: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("memory", ["store", "--key", key, "--value", value], workspace, config);
+  }
+
+  /**
+   * Retrieve data from memory
+   */
+  @func()
+  async memoryRetrieve(
+    key: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("memory", ["retrieve", "--key", key], workspace, config);
   }
 
   /**
    * Train neural model
    */
-  async trainModel(modelType: string, data: any[]): Promise<void> {
-    await this.neural.train(modelType, data);
+  @func()
+  async neuralTrain(
+    modelType: string,
+    dataPath: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("neural", ["train", "--model", modelType, "--data", dataPath], workspace, config);
   }
 
   /**
    * Analyze GitHub repository
    */
-  async analyzeRepo(owner: string, repo: string): Promise<any> {
-    return this.github.analyzeRepository(owner, repo);
+  @func()
+  async githubAnalyze(
+    repoUrl: string,
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    return this.run("github", ["analyze", "--repo", repoUrl], workspace, config);
   }
 
   /**
-   * Clean up resources
+   * Run tests within the container
    */
-  async cleanup(): Promise<void> {
-    if (this.client) {
-      await this.client.close();
-    }
-  }
-
-  /**
-   * Build Docker image
-   */
-  async buildDockerImage(): Promise<string> {
-    const dockerfile = await this.client.host().file('./docker/Dockerfile');
+  @func()
+  async test(
+    testSuite: string = "all",
+    workspace?: Directory,
+    config?: ClaudeFlowConfig
+  ): Promise<string> {
+    const container = await this.container(workspace, config);
     
-    const container = await this.client
-      .container()
-      .build(dockerfile, { 
-        buildArgs: [
-          { name: 'CLAUDE_FLOW_VERSION', value: '2.0.0-alpha.101' }
-        ]
-      });
-
-    const imageRef = await container.export('./claude-flow.tar');
+    // Run tests based on suite
+    const testCommand = testSuite === "all" 
+      ? ["npm", "test"]
+      : ["npm", "run", `test:${testSuite}`];
     
-    return imageRef;
-  }
-
-  /**
-   * Run tests
-   */
-  async runTests(category?: string): Promise<boolean> {
-    const testCommand = category ? `test:${category}` : 'test';
+    const result = await container
+      .withExec(testCommand)
+      .stdout();
     
-    const result = await this.container
-      .withWorkdir('/workspace')
-      .withExec(['npm', 'run', testCommand])
-      .exitCode();
-
-    return result === 0;
+    return result;
   }
 }
 
-/**
- * Factory function to create and initialize a ClaudeFlow instance
- */
-export async function createClaudeFlow(config?: Partial<ClaudeFlowConfig>): Promise<ClaudeFlow> {
-  const claudeFlow = new ClaudeFlow(config);
-  await claudeFlow.init();
-  return claudeFlow;
-}
-
-// Export default for CLI usage
-export default ClaudeFlow;
+// Export default instance for convenience
+export default new ClaudeFlowDagger();

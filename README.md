@@ -1,346 +1,361 @@
 # Claude Flow Dagger Module
 
-A comprehensive Dagger module and Docker image for Claude Flow CLI with full non-interactive mode support and all required development tools.
+[![Version](https://img.shields.io/badge/version-1.11.0-blue.svg)](https://github.com/liamhelmer/claude-flow-dagger)
+[![Docker](https://img.shields.io/badge/docker-ghcr.io-green.svg)](https://ghcr.io/liamhelmer/claude-flow-dagger)
+[![Claude Flow](https://img.shields.io/badge/claude--flow-2.0.0--alpha.101-purple.svg)](https://github.com/ruvnet/claude-flow)
+[![Dagger](https://img.shields.io/badge/dagger-0.18.16-orange.svg)](https://dagger.io)
 
-## Features
+A comprehensive Dagger module for Claude Flow CLI that runs entirely in Docker containers with full CLI capabilities, automatic LLM configuration passthrough, and all the latest dependencies.
 
-- **Complete Dagger Module**: TypeScript/Go wrapper for all claude-flow CLI commands
-- **Non-Interactive Mode**: All commands support automation and CI/CD pipelines
-- **Dagger LLM Integration**: Automatic passthrough of ANTHROPIC_BASE_URL and ANTHROPIC_AUTH_TOKEN from Dagger engine
-- **Comprehensive Docker Image**: Includes all tools and dependencies (August 2025 versions)
-- **SPARC Methodology**: Full implementation of Specification, Pseudocode, Architecture, Refinement, Completion
-- **AI Swarm Orchestration**: 54+ agent types with multiple topology support
-- **Distributed Memory**: State management with multiple providers
-- **Neural Operations**: Pattern learning and optimization
-- **GitHub Integration**: Complete repository lifecycle management
+## 🚀 Features
 
-## Quick Start
+- **Full Docker Integration**: Runs claude-flow in optimized Docker containers
+- **Complete CLI Support**: All claude-flow commands and options available
+- **Automatic LLM Configuration**: Seamlessly passes Dagger LLM settings to claude-flow
+- **SPARC Methodology**: Full support for Specification, Pseudocode, Architecture, Refinement, Completion
+- **AI Swarm Orchestration**: 54+ specialized agent types with distributed coordination
+- **Memory Management**: Persistent and distributed memory systems
+- **Neural Operations**: 27+ neural models for pattern learning
+- **GitHub Integration**: Repository analysis, PR management, issue tracking
+- **Non-Interactive Mode**: Perfect for CI/CD pipelines
+- **Latest Dependencies**: All packages updated to latest stable versions (December 2024)
 
-### Using the Dagger Module
+## 📦 Installation
 
-```typescript
-import { createClaudeFlow } from 'claude-flow-dagger';
-
-// Initialize the module - automatically uses Dagger LLM configuration
-// The module will automatically detect and use ANTHROPIC_BASE_URL and 
-// ANTHROPIC_AUTH_TOKEN from the Dagger engine if available
-const claudeFlow = await createClaudeFlow({
-  // Optional: provide fallback API key if not using Dagger LLM
-  apiKey: process.env.CLAUDE_API_KEY,
-  environment: 'development'
-});
-
-// Run SPARC TDD workflow
-await claudeFlow.runTdd('User authentication feature');
-
-// Initialize a swarm
-await claudeFlow.initSwarm('hierarchical', 'Build a REST API');
-
-// Analyze a repository
-const analysis = await claudeFlow.analyzeRepo('owner', 'repo');
-```
-
-### Dagger LLM Integration
-
-The module automatically detects and uses Dagger engine LLM configuration:
-
-```typescript
-// When running in Dagger with LLM configured:
-// dagger call --with-llm anthropic:claude-3-opus your-function
-
-// The module automatically uses:
-// - ANTHROPIC_BASE_URL from Dagger engine
-// - ANTHROPIC_AUTH_TOKEN from Dagger engine
-// - Falls back to CLAUDE_API_KEY if not in Dagger LLM mode
-```
-
-### Using the Docker Image
-
-```bash
-# Build the image
-./docker/scripts/build.sh --claude-flow-version 2.0.0-alpha.101
-
-# Run the container
-docker run -it --rm \
-  -e CLAUDE_API_KEY=$CLAUDE_API_KEY \
-  -v $(pwd):/workspace \
-  claude-flow-dagger:latest
-
-# With Docker Compose
-docker-compose up -d
-```
-
-## Installation
-
-### NPM Package
-
+### Using npm
 ```bash
 npm install claude-flow-dagger
 ```
 
-### Docker Image
-
+### Using Docker
 ```bash
-docker pull claudeflow/claude-flow-dagger:latest
+docker pull ghcr.io/liamhelmer/claude-flow-dagger:latest
 ```
 
-### From Source
-
+### Using Dagger CLI
 ```bash
-git clone https://github.com/ruvnet/claude-flow-dagger.git
-cd claude-flow-dagger
-npm install
-npm run build
+dagger install github.com/liamhelmer/claude-flow-dagger
 ```
 
-## Module Architecture
+## 🔧 Configuration
 
-### Core Modules
+The module automatically detects and uses LLM configuration from the Dagger environment:
 
-- **`ClaudeFlowDagger`**: Base module with core CLI wrapping functionality
-- **`SparcModule`**: SPARC methodology implementation
-- **`SwarmModule`**: AI agent swarm orchestration
-- **`MemoryModule`**: Distributed memory and state management
-- **`NeuralModule`**: Neural network operations and pattern learning
-- **`GitHubModule`**: GitHub repository and workflow management
-- **`UtilsModule`**: Utility functions and helpers
+### Environment Variables (Auto-detected)
+```bash
+# Primary Anthropic configuration (used by Dagger LLM)
+ANTHROPIC_BASE_URL=https://api.anthropic.com
+ANTHROPIC_AUTH_TOKEN=your-auth-token
 
-### Key Features
+# Alternative Dagger-specific variables
+DAGGER_ANTHROPIC_BASE_URL=https://api.anthropic.com
+DAGGER_ANTHROPIC_AUTH_TOKEN=your-auth-token
 
-#### SPARC Methodology
-- Complete workflow automation
-- Individual phase execution
-- Batch and pipeline operations
-- Specialized modes (backend, mobile, ML, CI/CD)
+# Claude-specific variables (fallback)
+CLAUDE_API_KEY=your-api-key
+CLAUDE_BASE_URL=https://api.anthropic.com
 
-#### Swarm Orchestration
-- Multiple topologies: mesh, hierarchical, adaptive, byzantine
-- 54+ specialized agent types
-- Consensus algorithms: majority, unanimous, weighted
-- Auto-scaling and health monitoring
+# OpenAI compatibility
+OPENAI_API_KEY=your-api-key
+OPENAI_BASE_URL=https://api.openai.com
+```
 
-#### Memory Management
-- Multiple providers: Redis, PostgreSQL, file, in-memory
-- Distributed locking
-- Pub/Sub messaging
-- Backup and restore
-- Namespace operations
+## 💻 Usage
 
-## Docker Image Contents
+### Basic Example
 
-### Programming Languages (Latest Stable - August 2025)
-- **Node.js 22.x**: Latest LTS with npm, yarn, pnpm
-- **Python 3.13**: With pip, pipx, virtual environments
-- **Go 1.23.1**: Complete toolchain
-- **Rust stable**: With cargo
+```typescript
+import { ClaudeFlowDagger } from "claude-flow-dagger";
+import { dag } from "@dagger.io/dagger";
+
+const claudeFlow = new ClaudeFlowDagger();
+const workspace = dag.host().directory(".");
+
+// Run SPARC TDD workflow
+const result = await claudeFlow.tdd("user authentication", workspace);
+console.log(result);
+
+// Initialize a swarm
+await claudeFlow.swarmInit("mesh", "development", workspace);
+
+// Spawn an agent
+await claudeFlow.agentSpawn("coder", "Build REST API", workspace);
+
+// Store and retrieve memory
+await claudeFlow.memoryStore("config", JSON.stringify({version: "1.0"}), workspace);
+const data = await claudeFlow.memoryRetrieve("config", workspace);
+```
+
+### Advanced Configuration
+
+```typescript
+const config = {
+  env: {
+    DEBUG: "true",
+    LOG_LEVEL: "verbose"
+  },
+  secrets: {
+    GITHUB_TOKEN: process.env.GITHUB_TOKEN
+  },
+  nonInteractive: true,
+  apiKey: process.env.CLAUDE_API_KEY,
+  baseUrl: "https://custom-llm-endpoint.com"
+};
+
+// Run with custom configuration
+const result = await claudeFlow.sparc(
+  "specification",
+  "Design microservices",
+  workspace,
+  config
+);
+
+// Execute custom commands
+const customResult = await claudeFlow.custom(
+  ["swarm", "status", "--format", "json"],
+  workspace,
+  config
+);
+```
+
+## 📚 API Reference
+
+### Core Methods
+
+| Method | Description |
+|--------|-------------|
+| `container(workspace?, config?)` | Creates a configured Claude Flow container |
+| `run(command, args[], workspace?, config?)` | Executes any claude-flow command |
+| `sparc(mode, task, workspace?, config?)` | Executes SPARC methodology commands |
+| `swarm(action, args[], workspace?, config?)` | Manages AI swarm operations |
+| `agent(action, args[], workspace?, config?)` | Controls individual AI agents |
+| `memory(action, args[], workspace?, config?)` | Manages distributed memory |
+| `neural(action, args[], workspace?, config?)` | Executes neural operations |
+| `github(action, args[], workspace?, config?)` | GitHub integration commands |
+
+### Specialized Methods
+
+| Method | Description |
+|--------|-------------|
+| `tdd(feature, workspace?, config?)` | Runs Test-Driven Development workflow |
+| `pipeline(task, workspace?, config?)` | Executes complete SPARC pipeline |
+| `batch(modes[], task, workspace?, config?)` | Parallel execution of multiple modes |
+| `swarmInit(topology, objective, workspace?, config?)` | Initializes swarm with topology |
+| `agentSpawn(type, task, workspace?, config?)` | Spawns specialized agent |
+| `memoryStore(key, value, workspace?, config?)` | Stores data in memory |
+| `memoryRetrieve(key, workspace?, config?)` | Retrieves data from memory |
+| `neuralTrain(model, data, workspace?, config?)` | Trains neural models |
+| `githubAnalyze(repo, workspace?, config?)` | Analyzes GitHub repository |
+| `healthcheck(workspace?, config?)` | Comprehensive health check |
+| `benchmark(type, workspace?, config?)` | Runs performance benchmarks |
+| `custom(command[], workspace?, config?)` | Execute custom commands |
+
+## 🐳 Docker Image Contents
+
+The Docker image (`ghcr.io/liamhelmer/claude-flow-dagger:latest`) includes:
+
+### Core Tools
+- **Claude Flow**: v2.0.0-alpha.101
+- **Node.js**: 22.x LTS
+- **Python**: 3.x with pip and pipx
+- **Go**: 1.23.1
+- **Rust**: stable
 
 ### Cloud SDKs
-- **Google Cloud SDK**: ALL components including alpha
-- **AWS CLI v2**: Latest version
+- **Google Cloud SDK**: Core components with kubectl
+- **AWS CLI**: v2 latest
 - **Azure CLI**: Latest version
 
 ### Database Clients
-- PostgreSQL 16
-- MySQL 8.0
-- Redis 7
-- MongoDB 7.0
+- **PostgreSQL**: 16 client
+- **MySQL**: 8.0 client
+- **Redis**: Tools
+- **MongoDB**: Tools with mongosh
 
 ### DevOps Tools
-- Docker CLI with buildx and compose
-- Kubernetes: kubectl, Helm
-- HashiCorp: Vault, Terraform
-- Dagger CLI
-- GitHub CLI
+- **Docker CLI**: With buildx and compose plugins
+- **Kubernetes**: kubectl and Helm
+- **HashiCorp**: Vault and Terraform
+- **Dagger CLI**: Latest version
+- **GitHub CLI**: Latest version
 
-### Claude Flow Tools
-- Claude CLI (latest)
-- claude-flow v2.0.0-alpha.101
-- All MCP servers
+### Development Tools
+- **ripgrep**: Fast grep
+- **fd-find**: Fast find
+- **fzf**: Fuzzy finder
+- **tmux**: Terminal multiplexer
+- **tree**: Directory viewer
 
-## Configuration
+## 🏗️ Building Custom Images
 
-### Environment Variables
+```typescript
+const claudeFlow = new ClaudeFlowDagger();
+const workspace = dag.host().directory(".");
 
+// Build and push custom image
+await claudeFlow.buildImage(
+  "ghcr.io/myorg/custom-claude-flow",
+  "v1.0.0",
+  workspace
+);
+```
+
+## 🧪 Testing
+
+Run tests within the container:
+
+```typescript
+// Run all tests
+await claudeFlow.test("all", workspace);
+
+// Run specific test suite
+await claudeFlow.test("unit", workspace);
+await claudeFlow.test("integration", workspace);
+await claudeFlow.test("e2e", workspace);
+```
+
+Local testing:
 ```bash
-# Authentication (priority order: ANTHROPIC > DAGGER > CLAUDE)
-# When using Dagger LLM, these are automatically set by the engine
-ANTHROPIC_AUTH_TOKEN=your-auth-token  # Preferred for Dagger LLM
-ANTHROPIC_BASE_URL=https://api.anthropic.com  # Optional custom endpoint
-
-# Fallback authentication (used if Dagger LLM not configured)
-CLAUDE_API_KEY=your-api-key
-
-# Optional
-CLAUDE_FLOW_ENVIRONMENT=development|staging|production|testing|ci
-CLAUDE_FLOW_TIMEOUT=30000
-CLAUDE_FLOW_RETRIES=3
-
-# Docker
-DOCKER_REGISTRY=docker.io
-DOCKER_NAMESPACE=claudeflow
-DOCKER_TAG=latest
-
-# Memory Provider
-MEMORY_PROVIDER=redis|postgresql|memory|file
-MEMORY_CONNECTION_URL=redis://localhost:6379
-
-# GitHub Integration
-GITHUB_TOKEN=your-github-token
-GITHUB_OWNER=your-org
-GITHUB_REPO=your-repo
+npm test              # All tests
+npm run test:unit     # Unit tests
+npm run test:integration  # Integration tests
+npm run test:docker   # Docker tests
 ```
 
-### Configuration Presets
-
-The module includes presets for different environments:
-
-```typescript
-import { getConfigForEnvironment } from 'claude-flow-dagger';
-
-// Load production configuration
-const config = getConfigForEnvironment('production');
-```
-
-## API Reference
-
-### Main Class
-
-```typescript
-class ClaudeFlow {
-  async init(): Promise<void>
-  async execute(command: string, args?: string[]): Promise<string>
-  async runTdd(feature: string): Promise<string>
-  async initSwarm(topology: string, objective: string): Promise<string>
-  async storeMemory(key: string, value: any): Promise<void>
-  async trainModel(modelType: string, data: any[]): Promise<void>
-  async analyzeRepo(owner: string, repo: string): Promise<any>
-  async buildDockerImage(): Promise<string>
-  async runTests(category?: string): Promise<boolean>
-  async cleanup(): Promise<void>
-}
-```
-
-### SPARC Module
-
-```typescript
-class SparcModule {
-  async run(mode: SparcMode, task: string): Promise<ExecutionResult>
-  async tdd(feature: string): Promise<string>
-  async completeWorkflow(task: string): Promise<ExecutionResult>
-  async batch(modes: SparcMode[], task: string): Promise<ExecutionResult[]>
-  async pipeline(task: string): Promise<string>
-}
-```
-
-### Swarm Module
-
-```typescript
-class SwarmModule {
-  async init(topology: SwarmTopology, objective: string): Promise<string>
-  async spawnAgent(type: AgentType, count?: number): Promise<string>
-  async status(swarmId?: string): Promise<SwarmResult>
-  async scale(agentType: AgentType, count: number): Promise<string>
-  async execute(task: string, swarmId?: string): Promise<string>
-}
-```
-
-## Testing
-
-```bash
-# Run all tests
-npm test
-
-# Run specific test categories
-npm run test:unit
-npm run test:integration
-npm run test:docker
-npm run test:security
-npm run test:performance
-npm run test:e2e
-npm run test:cicd
-```
-
-## CI/CD Integration
+## 🚀 CI/CD Integration
 
 ### GitHub Actions
 
 ```yaml
 name: Claude Flow Pipeline
-on: [push, pull_request]
+
+on: [push]
 
 jobs:
-  build:
+  claude-flow:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/setup-node@v3
-        with:
-          node-version: '22'
-      - run: npm install
-      - run: npm run build
-      - run: npm test
+      - uses: actions/checkout@v4
       
-      - name: Run Claude Flow
+      - name: Run Claude Flow with Dagger
+        uses: docker://ghcr.io/liamhelmer/claude-flow-dagger:latest
         env:
-          CLAUDE_API_KEY: ${{ secrets.CLAUDE_API_KEY }}
-        run: |
-          npx claude-flow sparc tdd "My feature"
+          ANTHROPIC_AUTH_TOKEN: ${{ secrets.ANTHROPIC_TOKEN }}
+          ANTHROPIC_BASE_URL: ${{ vars.ANTHROPIC_BASE_URL }}
+        with:
+          args: |
+            claude-flow sparc tdd "implement feature"
 ```
 
-### GitLab CI
+### Dagger Pipeline
 
-```yaml
-stages:
-  - build
-  - test
-  - deploy
+```typescript
+import { dag } from "@dagger.io/dagger";
+import { ClaudeFlowDagger } from "claude-flow-dagger";
 
-claude-flow:
-  image: claudeflow/claude-flow-dagger:latest
-  script:
-    - npx claude-flow sparc pipeline "Build and deploy"
-  variables:
-    CLAUDE_API_KEY: ${CLAUDE_API_KEY}
+export async function pipeline() {
+  const claudeFlow = new ClaudeFlowDagger();
+  const workspace = dag.host().directory(".");
+  
+  // Run complete pipeline
+  await claudeFlow.pipeline("Build and test application", workspace);
+  
+  // Run tests
+  await claudeFlow.test("all", workspace);
+  
+  // Deploy
+  await claudeFlow.custom(["deploy", "--production"], workspace);
+}
 ```
 
-## Performance
+## 📋 Available Agent Types
 
-- **84.8% SWE-Bench solve rate**: Industry-leading performance
-- **32.3% token reduction**: Efficient context usage
-- **2.8-4.4x speed improvement**: Through parallel execution
-- **<5s startup time**: Optimized container initialization
-- **<2m build time**: Fast Docker image builds
-- **<512MB memory**: Low resource footprint
+The module supports 54+ specialized AI agents:
 
-## Security
+### Core Development
+`coder`, `reviewer`, `tester`, `planner`, `researcher`
 
-- Non-root container execution
-- Secret management via environment variables
-- Vulnerability scanning with Trivy/Docker Scout
-- Minimal attack surface with distroless options
-- Regular security updates
+### Swarm Coordination
+`hierarchical-coordinator`, `mesh-coordinator`, `adaptive-coordinator`, `collective-intelligence-coordinator`, `swarm-memory-manager`
 
-## Contributing
+### Consensus & Distributed
+`byzantine-coordinator`, `raft-manager`, `gossip-coordinator`, `consensus-builder`, `crdt-synchronizer`, `quorum-manager`, `security-manager`
 
-Contributions are welcome! Please see [CONTRIBUTING.md](CONTRIBUTING.md) for details.
+### Performance & Optimization
+`perf-analyzer`, `performance-benchmarker`, `task-orchestrator`, `memory-coordinator`, `smart-agent`
 
-## License
+### GitHub & Repository
+`github-modes`, `pr-manager`, `code-review-swarm`, `issue-tracker`, `release-manager`, `workflow-automation`, `project-board-sync`, `repo-architect`, `multi-repo-swarm`
+
+### SPARC Methodology
+`sparc-coord`, `sparc-coder`, `specification`, `pseudocode`, `architecture`, `refinement`
+
+### Specialized Development
+`backend-dev`, `mobile-dev`, `ml-developer`, `cicd-engineer`, `api-docs`, `system-architect`, `code-analyzer`, `base-template-generator`
+
+### Testing & Validation
+`tdd-london-swarm`, `production-validator`
+
+### Migration & Planning
+`migration-planner`, `swarm-init`
+
+## 🔐 Security
+
+- **Non-root execution**: Container runs as non-root user
+- **Secret management**: Secure handling of API keys and tokens
+- **Minimal attack surface**: Only essential tools included
+- **Regular updates**: Automated dependency updates via GitHub Actions
+- **Vulnerability scanning**: SBOM generation for security audits
+
+## 📊 Performance
+
+- **84.8% SWE-Bench solve rate**: Industry-leading AI performance
+- **32.3% token reduction**: Efficient LLM usage
+- **2.8-4.4x speed improvement**: Through parallel agent execution
+- **Fast startup**: Optimized container initialization
+- **Low memory footprint**: Efficient resource usage
+
+## 🔄 Version History
+
+- **1.11.0** - Complete Docker integration with all CLI capabilities
+- **1.10.0** - Optimized Docker build for faster CI/CD
+- **1.9.0** - Removed unavailable Google Cloud SDK components
+- **1.0.0** - Initial release with basic Dagger support
+
+## 🤝 Contributing
+
+Contributions are welcome! Please feel free to submit a Pull Request.
+
+1. Fork the repository
+2. Create your feature branch (`git checkout -b feature/AmazingFeature`)
+3. Commit your changes (`git commit -m 'Add some AmazingFeature'`)
+4. Push to the branch (`git push origin feature/AmazingFeature`)
+5. Open a Pull Request
+
+## 🐛 Issues
+
+Report issues at: [GitHub Issues](https://github.com/liamhelmer/claude-flow-dagger/issues)
+
+## 📚 Documentation
+
+- [Claude Flow Documentation](https://github.com/ruvnet/claude-flow)
+- [Dagger Documentation](https://docs.dagger.io)
+- [Usage Examples](./examples/usage.ts)
+- [API Reference](./docs/api.md)
+
+## 📄 License
 
 MIT License - see [LICENSE](LICENSE) file for details.
 
-## Support
+## 🙏 Acknowledgments
 
-- GitHub Issues: https://github.com/ruvnet/claude-flow/issues
-- Documentation: https://github.com/ruvnet/claude-flow
-- Discord: https://discord.gg/claude-flow
-
-## Acknowledgments
-
-- Claude Flow Team for the amazing CLI tool
-- Dagger.io for the containerization platform
-- Anthropic for Claude AI
-- All contributors and users
+- [Claude Flow](https://github.com/ruvnet/claude-flow) by ruvnet for the amazing CLI tool
+- [Dagger](https://dagger.io) for containerized CI/CD platform
+- [Anthropic](https://anthropic.com) for Claude AI
+- All contributors and the open source community
 
 ---
 
-Built with ❤️ by the Claude Flow community
+Built with ❤️ using Claude Flow, Dagger, and Claude AI
+
+**Version**: 1.11.0 | **Docker**: ghcr.io/liamhelmer/claude-flow-dagger:latest | **NPM**: claude-flow-dagger
