@@ -129,9 +129,9 @@ RUN apt-get update && \
     apt-get install -y redis-tools && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# MongoDB tools
+# MongoDB tools (using jammy repository for Ubuntu 24.04 compatibility)
 RUN wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | apt-key add - && \
-    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu $(lsb_release -cs)/mongodb-org/7.0 multiverse" | \
+    echo "deb [ arch=amd64,arm64 ] https://repo.mongodb.org/apt/ubuntu jammy/mongodb-org/7.0 multiverse" | \
     tee /etc/apt/sources.list.d/mongodb-org-7.0.list && \
     apt-get update && \
     apt-get install -y mongodb-org-tools mongodb-mongosh && \
