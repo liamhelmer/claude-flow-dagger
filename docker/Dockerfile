@@ -59,7 +59,6 @@ RUN apt-get update && \
         python3-pip \
         pipx \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
-    && python3 -m pip install --upgrade --break-system-packages pip setuptools \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Go 1.23.1
