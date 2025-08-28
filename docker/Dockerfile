@@ -77,7 +77,7 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 # Stage 3: Cloud SDKs and tools
 FROM runtimes AS cloud-tools
 
-# Google Cloud SDK with ALL components including alpha
+# Google Cloud SDK with available components
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
     tee -a /etc/apt/sources.list.d/google-cloud-sdk.list && \
     curl https://packages.cloud.google.com/apt/doc/apt-key.gpg | \
@@ -91,10 +91,8 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
         google-cloud-cli-app-engine-python-extras \
         google-cloud-cli-bigtable-emulator \
         google-cloud-cli-cbt \
-        google-cloud-cli-cloud-build-local \
         google-cloud-cli-datastore-emulator \
         google-cloud-cli-firestore-emulator \
-        google-cloud-cli-spanner-emulator \
         google-cloud-cli-gke-gcloud-auth-plugin \
         kubectl \
         google-cloud-cli-pubsub-emulator \
