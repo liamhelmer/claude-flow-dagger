@@ -77,15 +77,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: Extract metadata for labels
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-          flavor: |
-            suffix=-amd64
-          tags: |
-            type=raw,value=${{ needs.semantic-release.outputs.new_release_version }}
+          labels: |
+            org.opencontainers.image.title=Claude Flow Dagger
+            org.opencontainers.image.description=Dagger module for Claude Flow CLI with non-interactive mode support
+            org.opencontainers.image.vendor=Badal.io
+            org.opencontainers.image.version=${{ needs.semantic-release.outputs.new_release_version }}
 
       - name: Build and push Docker image (amd64)
         id: build-amd64
@@ -94,8 +95,6 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           platforms: linux/amd64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=buildkit-amd64
           cache-to: type=gha,mode=max,scope=buildkit-amd64
@@ -104,7 +103,7 @@ jobs:
             VERSION=${{ needs.semantic-release.outputs.new_release_version }}
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VCS_REF=${{ github.sha }}
-          provenance: true
+          provenance: false
           sbom: false
           outputs: type=image,name=ghcr.io/${{ github.repository }},push-by-digest=true,name-canonical=true,push=true
       
@@ -153,15 +152,16 @@ jobs:
           username: ${{ github.actor }}
           password: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Extract metadata
+      - name: Extract metadata for labels
         id: meta
         uses: docker/metadata-action@v5
         with:
           images: ghcr.io/${{ github.repository }}
-          flavor: |
-            suffix=-arm64
-          tags: |
-            type=raw,value=${{ needs.semantic-release.outputs.new_release_version }}
+          labels: |
+            org.opencontainers.image.title=Claude Flow Dagger
+            org.opencontainers.image.description=Dagger module for Claude Flow CLI with non-interactive mode support
+            org.opencontainers.image.vendor=Badal.io
+            org.opencontainers.image.version=${{ needs.semantic-release.outputs.new_release_version }}
 
       - name: Build and push Docker image (arm64)
         id: build-arm64
@@ -170,8 +170,6 @@ jobs:
           context: .
           file: ./docker/Dockerfile
           platforms: linux/arm64
-          push: true
-          tags: ${{ steps.meta.outputs.tags }}
           labels: ${{ steps.meta.outputs.labels }}
           cache-from: type=gha,scope=buildkit-arm64
           cache-to: type=gha,mode=max,scope=buildkit-arm64
@@ -180,7 +178,7 @@ jobs:
             VERSION=${{ needs.semantic-release.outputs.new_release_version }}
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VCS_REF=${{ github.sha }}
-          provenance: true
+          provenance: false
           sbom: false
           outputs: type=image,name=ghcr.io/${{ github.repository }},push-by-digest=true,name-canonical=true,push=true
       
