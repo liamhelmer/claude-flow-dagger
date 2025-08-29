@@ -29,7 +29,12 @@ npm install claude-flow-dagger
 
 ### Using Docker
 ```bash
+# Automatically pulls the correct architecture (amd64 or arm64)
 docker pull ghcr.io/liamhelmer/claude-flow-dagger:latest
+
+# Or specify platform explicitly
+docker pull --platform linux/amd64 ghcr.io/liamhelmer/claude-flow-dagger:latest
+docker pull --platform linux/arm64 ghcr.io/liamhelmer/claude-flow-dagger:latest
 ```
 
 ### Using Dagger CLI
@@ -152,7 +157,7 @@ const customResult = await claudeFlow.custom(
 
 ## 🐳 Docker Image Contents
 
-The Docker image (`ghcr.io/liamhelmer/claude-flow-dagger:latest`) includes:
+The Docker image (`ghcr.io/liamhelmer/claude-flow-dagger:latest`) supports both **linux/amd64** and **linux/arm64** architectures and includes:
 
 ### Core Tools
 - **Claude Flow**: v2.0.0-alpha.101
@@ -317,6 +322,8 @@ The module supports 54+ specialized AI agents:
 
 ## 🔄 Version History
 
+- **2.1.0** - Multi-platform Docker support (linux/amd64 and linux/arm64)
+- **2.0.0** - Complete refactor with Docker-based execution and test workflows
 - **1.11.0** - Complete Docker integration with all CLI capabilities
 - **1.10.0** - Optimized Docker build for faster CI/CD
 - **1.9.0** - Removed unavailable Google Cloud SDK components
