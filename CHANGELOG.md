@@ -1,3 +1,10 @@
+# [2.3.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.2.0...v2.3.0) (2025-08-29)
+
+
+### Bug Fixes
+
+* workflow fix ([d98d9d9](https://github.com/liamhelmer/claude-flow-dagger/commit/d98d9d9602e68052d669b65b3b008f7d37c1f5a6))
+
 # [2.2.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.1.0...v2.2.0) (2025-08-29)
 
 
