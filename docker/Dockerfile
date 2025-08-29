@@ -1,8 +1,12 @@
 # Multi-stage Dockerfile for Claude Flow with all required tools
-# Optimized for August 2025 standards with latest stable versions
+# Optimized for multi-architecture builds (amd64 and arm64)
 
 # Stage 1: Base system with essential tools
 FROM ubuntu:24.04 AS base
+
+# Add architecture detection
+ARG TARGETARCH
+ARG TARGETPLATFORM
 
 # Prevent interactive prompts during build
 ENV DEBIAN_FRONTEND=noninteractive
@@ -44,6 +48,8 @@ ENV LC_ALL=en_US.UTF-8
 # Stage 2: Programming languages and runtimes
 FROM base AS runtimes
 
+ARG TARGETARCH
+
 # Node.js 22.x (latest LTS)
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
@@ -61,10 +67,11 @@ RUN apt-get update && \
     && update-alternatives --install /usr/bin/python python /usr/bin/python3 1 \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Go 1.23.1
-RUN wget -q https://go.dev/dl/go1.23.1.linux-amd64.tar.gz && \
-    tar -C /usr/local -xzf go1.23.1.linux-amd64.tar.gz && \
-    rm go1.23.1.linux-amd64.tar.gz
+# Go 1.23.1 - Architecture-specific
+RUN GO_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "arm64" || echo "amd64") && \
+    wget -q https://go.dev/dl/go1.23.1.linux-${GO_ARCH}.tar.gz && \
+    tar -C /usr/local -xzf go1.23.1.linux-${GO_ARCH}.tar.gz && \
+    rm go1.23.1.linux-${GO_ARCH}.tar.gz
 
 ENV PATH="/usr/local/go/bin:${PATH}"
 ENV GOPATH="/go"
@@ -76,6 +83,8 @@ ENV PATH="/root/.cargo/bin:${PATH}"
 
 # Stage 3: Cloud SDKs and tools
 FROM runtimes AS cloud-tools
+
+ARG TARGETARCH
 
 # Google Cloud SDK (basic installation)
 RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.cloud.google.com/apt cloud-sdk main" | \
@@ -89,8 +98,9 @@ RUN echo "deb [signed-by=/usr/share/keyrings/cloud.google.gpg] https://packages.
         kubectl \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# AWS CLI v2
-RUN curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip" && \
+# AWS CLI v2 - Architecture-specific
+RUN AWS_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64") && \
+    curl "https://awscli.amazonaws.com/awscli-exe-linux-${AWS_ARCH}.zip" -o "awscliv2.zip" && \
     unzip awscliv2.zip && \
     ./aws/install && \
     rm -rf awscliv2.zip aws/
@@ -139,6 +149,8 @@ RUN npm install -g claude-flow@${CLAUDE_FLOW_VERSION}
 # Stage 6: Additional development tools
 FROM claude-tools AS dev-tools
 
+ARG TARGETARCH
+
 # HashiCorp tools
 RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/share/keyrings/hashicorp-archive-keyring.gpg && \
     echo "deb [signed-by=/usr/share/keyrings/hashicorp-archive-keyring.gpg] https://apt.releases.hashicorp.com $(lsb_release -cs) main" | \
@@ -149,15 +161,17 @@ RUN wget -O- https://apt.releases.hashicorp.com/gpg | gpg --dearmor -o /usr/shar
         terraform \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Dagger CLI
-RUN cd /tmp && \
+# Dagger CLI - Architecture-specific
+RUN DAGGER_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "arm64" || echo "amd64") && \
+    cd /tmp && \
     curl -fsSL https://dl.dagger.io/dagger/install.sh | sh && \
     mv /tmp/bin/dagger /usr/local/bin/ && \
     rm -rf /tmp/bin
 
-# Docker CLI and Docker-in-Docker support
-RUN curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
-    add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
+# Docker CLI and Docker-in-Docker support - Architecture-aware
+RUN DOCKER_ARCH=$(dpkg --print-architecture) && \
+    curl -fsSL https://download.docker.com/linux/ubuntu/gpg | apt-key add - && \
+    add-apt-repository "deb [arch=${DOCKER_ARCH}] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable" && \
     apt-get update && \
     apt-get install -y docker-ce-cli docker-buildx-plugin docker-compose-plugin && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
@@ -182,8 +196,9 @@ RUN apt-get update && \
         tree \
     && apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Kubernetes tools
-RUN curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/amd64/kubectl" && \
+# Kubernetes tools - Architecture-specific
+RUN K8S_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "arm64" || echo "amd64") && \
+    curl -LO "https://dl.k8s.io/release/$(curl -L -s https://dl.k8s.io/release/stable.txt)/bin/linux/${K8S_ARCH}/kubectl" && \
     install -o root -g root -m 0755 kubectl /usr/local/bin/kubectl && \
     rm kubectl && \
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash

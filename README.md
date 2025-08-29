@@ -1,6 +1,6 @@
 # Claude Flow Dagger Module
 
-[![Version](https://img.shields.io/badge/version-1.11.0-blue.svg)](https://github.com/liamhelmer/claude-flow-dagger)
+[![Version](https://img.shields.io/badge/version-2.2.0-blue.svg)](https://github.com/liamhelmer/claude-flow-dagger)
 [![Docker](https://img.shields.io/badge/docker-ghcr.io-green.svg)](https://ghcr.io/liamhelmer/claude-flow-dagger)
 [![Claude Flow](https://img.shields.io/badge/claude--flow-2.0.0--alpha.101-purple.svg)](https://github.com/ruvnet/claude-flow)
 [![Dagger](https://img.shields.io/badge/dagger-0.18.16-orange.svg)](https://dagger.io)
@@ -157,7 +157,7 @@ const customResult = await claudeFlow.custom(
 
 ## 🐳 Docker Image Contents
 
-The Docker image (`ghcr.io/liamhelmer/claude-flow-dagger:latest`) supports both **linux/amd64** and **linux/arm64** architectures and includes:
+The Docker image (`ghcr.io/liamhelmer/claude-flow-dagger:latest`) supports both **linux/amd64** and **linux/arm64** architectures with native builds for optimal performance. The image includes:
 
 ### Core Tools
 - **Claude Flow**: v2.0.0-alpha.101
@@ -310,7 +310,8 @@ The module supports 54+ specialized AI agents:
 - **Secret management**: Secure handling of API keys and tokens
 - **Minimal attack surface**: Only essential tools included
 - **Regular updates**: Automated dependency updates via GitHub Actions
-- **Vulnerability scanning**: SBOM generation for security audits
+- **Provenance attestations**: Build provenance included for supply chain security
+- **Architecture-specific builds**: Native builds for each platform
 
 ## 📊 Performance
 
@@ -322,6 +323,7 @@ The module supports 54+ specialized AI agents:
 
 ## 🔄 Version History
 
+- **2.2.0** - Native architecture builds with separate runners for optimal performance
 - **2.1.0** - Multi-platform Docker support (linux/amd64 and linux/arm64)
 - **2.0.0** - Complete refactor with Docker-based execution and test workflows
 - **1.11.0** - Complete Docker integration with all CLI capabilities
@@ -365,4 +367,4 @@ MIT License - see [LICENSE](LICENSE) file for details.
 
 Built with ❤️ using Claude Flow, Dagger, and Claude AI
 
-**Version**: 1.11.0 | **Docker**: ghcr.io/liamhelmer/claude-flow-dagger:latest | **NPM**: claude-flow-dagger
+**Version**: 2.2.0 | **Docker**: ghcr.io/liamhelmer/claude-flow-dagger:latest | **NPM**: claude-flow-dagger
