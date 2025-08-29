@@ -106,7 +106,7 @@ RUN AWS_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "aarch64" || echo "x86_64")
     rm -rf awscliv2.zip aws/
 
 # Azure CLI
-RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
+#RUN curl -sL https://aka.ms/InstallAzureCLIDeb | bash
 
 # Stage 4: Database clients and tools
 FROM cloud-tools AS database-tools
