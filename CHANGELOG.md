@@ -1,3 +1,10 @@
+# [2.1.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.0.0...v2.1.0) (2025-08-29)
+
+
+### Features
+
+* add comprehensive test workflow for Claude Flow module ([cc69c5d](https://github.com/liamhelmer/claude-flow-dagger/commit/cc69c5d38bcb536ee59f36e36734fc0db5d4f14c))
+
 # [2.0.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v1.11.0...v2.0.0) (2025-08-28)
 
 
