@@ -1,3 +1,10 @@
+# [2.6.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.5.0...v2.6.0) (2025-08-29)
+
+
+### Bug Fixes
+
+* use arm64 runners for arm build ([f803d35](https://github.com/liamhelmer/claude-flow-dagger/commit/f803d356640a6067fd6f26ed5a15d3604b0c950f))
+
 # [2.5.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.4.0...v2.5.0) (2025-08-29)
 
 
