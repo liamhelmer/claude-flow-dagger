@@ -1,3 +1,10 @@
+# [2.5.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.4.0...v2.5.0) (2025-08-29)
+
+
+### Bug Fixes
+
+* remove azure tools from build ([a225c3a](https://github.com/liamhelmer/claude-flow-dagger/commit/a225c3ad2dda6719142f377e3262c12e2015f434))
+
 # [2.4.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.3.0...v2.4.0) (2025-08-29)
 
 
