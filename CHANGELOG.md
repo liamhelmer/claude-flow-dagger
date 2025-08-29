@@ -1,3 +1,10 @@
+# [2.2.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.1.0...v2.2.0) (2025-08-29)
+
+
+### Features
+
+* enable multi-platform Docker builds for arm64 and amd64 ([52dc86b](https://github.com/liamhelmer/claude-flow-dagger/commit/52dc86b9699d30133841354eb44d7972c52f2fcb))
+
 # [2.1.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.0.0...v2.1.0) (2025-08-29)
 
 
