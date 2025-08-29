@@ -18,7 +18,7 @@ A comprehensive Dagger module for Claude Flow CLI that runs entirely in Docker c
 - **Neural Operations**: 27+ neural models for pattern learning
 - **GitHub Integration**: Repository analysis, PR management, issue tracking
 - **Non-Interactive Mode**: Perfect for CI/CD pipelines
-- **Latest Dependencies**: All packages updated to latest stable versions (December 2024) 
+- **Latest Dependencies**: All packages updated to latest stable versions (December 2024)
 
 ## 📦 Installation
 
