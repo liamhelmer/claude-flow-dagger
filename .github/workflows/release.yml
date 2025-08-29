@@ -123,7 +123,7 @@ jobs:
 
   docker-build-arm64:
     name: Build Docker Image (arm64)
-    runs-on: ubuntu-latest  # Will use QEMU for arm64, or can use self-hosted ARM runner
+    runs-on: ubuntu-24.04-arm  # Will use QEMU for arm64, or can use self-hosted ARM runner
     needs: semantic-release
     if: needs.semantic-release.outputs.new_release_published == 'true'
     steps:
@@ -134,6 +134,7 @@ jobs:
 
       - name: Set up QEMU
         uses: docker/setup-qemu-action@v3
+        if: env.RUNNER_ARCH != 'ARM64'
         with:
           platforms: linux/arm64
 
