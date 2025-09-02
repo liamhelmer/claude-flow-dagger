@@ -136,18 +136,8 @@ RUN wget -qO - https://www.mongodb.org/static/pgp/server-7.0.asc | apt-key add -
     apt-get install -y mongodb-org-tools mongodb-mongosh && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
-# Stage 5: Claude tools and MCP servers
-FROM database-tools AS claude-tools
-
-# Install claude-flow v2.0.0-alpha.101
-ARG CLAUDE_FLOW_VERSION=2.0.0-alpha.101
-RUN npm install -g claude-flow@${CLAUDE_FLOW_VERSION}
-
-# Note: MCP servers would be installed here once they become available on npm
-# Currently these packages are not published to npm registry
-
-# Stage 6: Additional development tools
-FROM claude-tools AS dev-tools
+# Stage 5: Additional development tools
+FROM database-tools AS dev-tools
 
 ARG TARGETARCH
 
@@ -203,7 +193,7 @@ RUN K8S_ARCH=$([ "${TARGETARCH}" = "arm64" ] && echo "arm64" || echo "amd64") &&
     rm kubectl && \
     curl https://raw.githubusercontent.com/helm/helm/main/scripts/get-helm-3 | bash
 
-# Stage 7: Final optimized image
+# Stage 6: Final optimized image
 FROM dev-tools AS final
 
 # Create non-root user
@@ -255,8 +245,15 @@ LABEL org.opencontainers.image.source="https://github.com/ruvnet/claude-flow"
 LABEL org.opencontainers.image.version="${CLAUDE_FLOW_VERSION}"
 LABEL org.opencontainers.image.created="2025-08-28"
 
+RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} @anthropic-ai/claude-code
+
 # Switch to non-root user
 USER claude
+
+# Stage 7: Claude tools
+
+# Note: MCP servers would be installed here once they become available on npm
+# Currently these packages are not published to npm registry
 
 # Entrypoint
 ENTRYPOINT ["/bin/bash"]

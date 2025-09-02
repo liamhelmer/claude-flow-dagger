@@ -60,31 +60,47 @@ git checkout -b "$BRANCH_NAME"
 echo "3️⃣ Running claude-flow hive-mind..."
 echo ""
 
+TDIR=$(mktemp -d /tmp/workspace.XXXXXX)
+
+# Initialize Install Claude and Claude-flow
+docker run --rm \
+    -v "${TDIR}/claude:/claude" \
+    -v "${TDIR}/workspace:/workspace" \
+    -w /workspace \
+    -e CLAUDE_FLOW_NON_INTERACTIVE=true \
+    -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
+    -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
+    -e DEBUG=true \
+    --entrypoint /usr/bin/bash \
+    ghcr.io/liamhelmer/claude-flow-dagger:latest \
+    -c 'cd /claude && npm install claude-flow@alpha @anthropic-ai/claude-code'
+
 # Initialize hive-mind
 docker run --rm \
-    -v "$(pwd):/workspace" \
+    -v "${TDIR}/claude:/claude" \
+    -v "${TDIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
     -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
     -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
     -e DEBUG=true \
+    --entrypoint /claude/claude-flow \
     ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    claude-flow hive-mind init
+    hive-mind init
 
 # Spawn hive-mind task
-CLAUDE_OUTPUT=$(docker run --rm \
-    -v "$(pwd):/workspace" \
+docker run --rm \
+    -v "${TDIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
     -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
     -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
     -e DEBUG=true \
+    --entrypoint /claude/claude-flow \
     ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    claude-flow hive-mind spawn "build a nodejs hello world app" --claude --non-interactive 2>&1)
+    hive-mind spawn "build a nodejs hello world app" --claude --non-interactive | tee $TDIR/output.log 2>&1
 
-echo "$CLAUDE_OUTPUT" | head -20
-echo "..."
-echo ""
+CLAUDE_OUTPUT=$(cat ${TDIR}/output.log)
 
 # Step 4: Check for changes and commit
 echo "4️⃣ Checking for changes..."
