@@ -1,3 +1,10 @@
+# [2.7.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.6.0...v2.7.0) (2025-09-02)
+
+
+### Bug Fixes
+
+* fixed claude-flow and claude-code install in dockerfile ([d642946](https://github.com/liamhelmer/claude-flow-dagger/commit/d642946badf1473872c0fa6fa281d54a216d289e))
+
 # [2.6.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.5.0...v2.6.0) (2025-08-29)
 
 
