@@ -245,6 +245,7 @@ LABEL org.opencontainers.image.source="https://github.com/ruvnet/claude-flow"
 LABEL org.opencontainers.image.version="${CLAUDE_FLOW_VERSION}"
 LABEL org.opencontainers.image.created="2025-08-28"
 
+# May remove in final dagger module
 RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} @anthropic-ai/claude-code
 
 # Switch to non-root user
