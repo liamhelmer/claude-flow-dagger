@@ -1,5 +1,8 @@
 #!/bin/bash -x
 
+echo "running $0 $@"
+env
+
 which ccr || exit 1
 ccr start &
 
