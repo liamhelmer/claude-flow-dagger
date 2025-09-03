@@ -188,3 +188,5 @@ target/
 # Miscellaneous
 *.tgz
 *.tar.gz
+
+!.claude-code-router
