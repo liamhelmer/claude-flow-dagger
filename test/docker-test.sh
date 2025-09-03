@@ -144,6 +144,7 @@ docker run --rm \
 echo "6️⃣ Testing the generated app..."
 echo ""
 
+
 # Look for JavaScript files
 if [ -f "index.js" ] || [ -f "app.js" ] || [ -f "server.js" ] || [ -f "hello.js" ]; then
     echo "✅ Found JavaScript files"
