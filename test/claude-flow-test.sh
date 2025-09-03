@@ -43,7 +43,7 @@ cat << EOF > ${HOME}/.claude-code-router/config.json
   }
 }
 EOF
-npm install @musicstudio/claude-code-router
+npm install @musistudio/claude-code-router
 
 which ccr || exit 1
 ccr start &
