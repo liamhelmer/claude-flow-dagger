@@ -88,9 +88,8 @@ docker run --rm \
     -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
-    --entrypoint /bin/bash \
-    ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    /workspace/claude-flow-test.sh hive-mind spawn "build a nodejs hello world app" --claude --non-interactive 2>&1 | tee $TEST_DIR/output.log || exit 1
+    --entrypoint /workspace/claude-flow-test.sh \
+    hive-mind spawn "build a nodejs hello world app" --claude --non-interactive --auto-spawn --verbose 2>&1 | tee $TEST_DIR/output.log || exit 1
 
 CLAUDE_OUTPUT=$(cat ${TEST_DIR}/output.log)
 
