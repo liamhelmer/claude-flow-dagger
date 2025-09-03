@@ -1,6 +1,8 @@
 #!/bin/bash -x
 
-mkdir -p ${HOME}/.claude-code-router/
+export HOME=/workspace
+
+mkdir -p /${HOME}/.claude-code-router/
 
 export ANTHROPIC_BASE_URL="http://127.0.0.1:3456"
 
@@ -9,6 +11,8 @@ cat << EOF > ${HOME}/.claude-code-router/config.json
   "PROXY_URL": "http://127.0.0.1:3456",
   "APIKEY": "any-key-will-do",
   "LOG": true,
+  "LOG_LEVEL": "debug",
+  "NON_INTERACTIVE_MODE": true,
   "Providers": [
     {
       "name": "fuelix-anthropic",
