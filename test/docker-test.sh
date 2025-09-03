@@ -64,22 +64,26 @@ popd
 cp ${0%/*}/claude-flow-test.sh ${TEST_DIR}
 docker pull ghcr.io/liamhelmer/claude-flow-dagger:latest || exit 1
 
+set -x
+
+echo "Initializing hive-mind..."
 # Initialize hive-mind
 docker run --rm \
     -v "${TEST_DIR}:/workspace" \
-    -w /workspace \
+    -w /workspace/workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
     -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
-    --entrypoint /usr/bin/claude-flow \
+    --entrypoint /home/claude/.npm-global/bin/claude-flow \
     ghcr.io/liamhelmer/claude-flow-dagger:latest \
     hive-mind init
 
+echo "spawning hive-mind..."
 # Spawn hive-mind task
-docker run --rm -itt \
+docker run --rm \
     -v "${TEST_DIR}:/workspace" \
-    -w /workspace \
+    -w /workspace/workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
     -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
