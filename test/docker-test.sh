@@ -18,9 +18,8 @@ if [ -z "$GITHUB_TOKEN" ]; then
     exit 1
 fi
 
-if [ -z "$ANTHROPIC_AUTH_TOKEN" ] && [ -z "$CLAUDE_API_KEY" ]; then
-    echo "❌ Error: ANTHROPIC_AUTH_TOKEN or CLAUDE_API_KEY environment variable is required"
-    echo "Please set: export ANTHROPIC_AUTH_TOKEN=your_anthropic_token"
+if [ -z "$FUELIX_AUTH_TOKEN" ]; then
+    echo "❌ Error: FUELIX_AUTH_TOKEN environment variable is required"
     exit 1
 fi
 
