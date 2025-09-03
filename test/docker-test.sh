@@ -44,7 +44,7 @@ echo ""
 
 # Step 1: Clone the repository
 echo "1️⃣ Cloning repository..."
-cd "$TEST_DIR"
+pushd "$TEST_DIR"
 git clone "https://${GITHUB_TOKEN}@github.com/badal-io/claude-test-repo.git" workspace
 cd workspace
 
@@ -60,47 +60,38 @@ git checkout -b "$BRANCH_NAME"
 echo "3️⃣ Running claude-flow hive-mind..."
 echo ""
 
-TDIR=$(mktemp -d /tmp/workspace.XXXXXX)
+popd
 
-# Initialize Install Claude and Claude-flow
-docker run --rm \
-    -v "${TDIR}/claude:/claude" \
-    -v "${TDIR}/workspace:/workspace" \
-    -w /workspace \
-    -e CLAUDE_FLOW_NON_INTERACTIVE=true \
-    -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
-    -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
-    -e DEBUG=true \
-    --entrypoint /usr/bin/bash \
-    ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    -c 'cd /claude && npm install claude-flow@alpha @anthropic-ai/claude-code'
+cp ${0%/*}/claude-flow-test.sh ${TEST_DIR}
+docker pull ghcr.io/liamhelmer/claude-flow-dagger:latest || exit 1
 
 # Initialize hive-mind
 docker run --rm \
-    -v "${TDIR}/claude:/claude" \
-    -v "${TDIR}:/workspace" \
+    -v "${TEST_DIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
     -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
     -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
+    -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
-    --entrypoint /claude/claude-flow \
+    --entrypoint /usr/bin/claude-flow \
     ghcr.io/liamhelmer/claude-flow-dagger:latest \
     hive-mind init
 
 # Spawn hive-mind task
 docker run --rm \
-    -v "${TDIR}:/workspace" \
+    -v "${TEST_DIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
     -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
     -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
+    -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
-    --entrypoint /claude/claude-flow \
+    --entrypoint /bin/bash \
     ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    hive-mind spawn "build a nodejs hello world app" --claude --non-interactive | tee $TDIR/output.log 2>&1
+    /workspace/claude-flow-test.sh hive-mind spawn "build a nodejs hello world app" --claude --non-interactive | tee $TEST_DIR/output.log 2>&1
 
-CLAUDE_OUTPUT=$(cat ${TDIR}/output.log)
+CLAUDE_OUTPUT=$(cat ${TEST_DIR}/output.log)
 
 # Step 4: Check for changes and commit
 echo "4️⃣ Checking for changes..."
