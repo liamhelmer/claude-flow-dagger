@@ -34,7 +34,7 @@ echo "📋 Configuration:"
 echo "  Repository: badal-io/claude-test-repo"
 echo "  Branch: $BRANCH_NAME"
 echo "  GitHub Token: ${GITHUB_TOKEN:0:8}..."
-echo "  Anthropic Token: ${ANTHROPIC_TOKEN:0:8}..."
+echo "  Anthropic Token: ${FUELIX_AUTH_TOKEN:0:8}..."
 echo ""
 
 # Create a temporary directory for the test
@@ -70,8 +70,7 @@ docker run --rm \
     -v "${TEST_DIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
-    -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
-    -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
+    -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
     --entrypoint /usr/bin/claude-flow \
@@ -83,8 +82,7 @@ docker run --rm -itt \
     -v "${TEST_DIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
-    -e ANTHROPIC_AUTH_TOKEN="$ANTHROPIC_TOKEN" \
-    -e ANTHROPIC_BASE_URL="$ANTHROPIC_BASE_URL" \
+    -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
     --entrypoint /bin/bash \

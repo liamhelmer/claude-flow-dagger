@@ -247,10 +247,12 @@ LABEL org.opencontainers.image.created="2025-08-28"
 
 # May remove in final dagger module
 RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} @anthropic-ai/claude-code
+RUN npm -g install @musistudio/claude-code-router
 
 # Switch to non-root user
 USER claude
 
+COPY .claude-code-router /home/claude/.claude-code-router
 # Stage 7: Claude tools
 
 # Note: MCP servers would be installed here once they become available on npm
