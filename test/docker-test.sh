@@ -79,7 +79,7 @@ docker run --rm \
     hive-mind init
 
 # Spawn hive-mind task
-docker run --rm -it \
+docker run --rm -itt \
     -v "${TEST_DIR}:/workspace" \
     -w /workspace \
     -e CLAUDE_FLOW_NON_INTERACTIVE=true \
