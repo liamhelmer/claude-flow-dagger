@@ -89,7 +89,7 @@ docker run --rm \
     -e DEBUG=true \
     --entrypoint /bin/bash \
     ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    /workspace/claude-flow-test.sh hive-mind spawn "build a nodejs hello world app" --claude --non-interactive | tee $TEST_DIR/output.log 2>&1
+    /workspace/claude-flow-test.sh hive-mind spawn "build a nodejs hello world app" --claude --non-interactive < /dev/null 2>&1 | tee $TEST_DIR/output.log
 
 CLAUDE_OUTPUT=$(cat ${TEST_DIR}/output.log)
 

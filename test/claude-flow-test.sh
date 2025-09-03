@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/bin/bash -x
 
 mkdir -p ${HOME}/.claude-code-router/
 
@@ -43,8 +43,9 @@ cat << EOF > ${HOME}/.claude-code-router/config.json
   }
 }
 EOF
-npm install @musistudio/claude-code-router
+npm install @musicstudio/claude-code-router
 
+which ccr || exit 1
 ccr start &
 
 claude-flow hive-mind init --force --neural-enhanced
