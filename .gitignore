@@ -436,3 +436,5 @@ profiles/
 # Keep configuration samples
 !config.example.*
 !settings.example.*
+!.claude-code-router/
+
