@@ -225,6 +225,7 @@ ENV DAGGER_ANTHROPIC_AUTH_TOKEN=""
 # Copy configuration files
 COPY --chown=claude:claude docker/config/claude-flow-config.json /home/claude/.config/claude-flow/config.json
 COPY --chown=claude:claude docker/config/mcp-servers.json /home/claude/.config/claude/mcp-servers.json
+COPY --chown=claude:claude docker/.claude-code-router/config.json /home/claude/.claude-code-router/
 
 # Health check
 HEALTHCHECK --interval=30s --timeout=10s --start-period=5s --retries=3 \
@@ -253,7 +254,6 @@ RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} && \
 # Switch to non-root user
 USER claude
 
-COPY .claude-code-router/config.json /home/claude/.claude-code-router
 # Stage 7: Claude tools
 
 # Note: MCP servers would be installed here once they become available on npm
