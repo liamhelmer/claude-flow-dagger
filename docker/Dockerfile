@@ -253,7 +253,7 @@ RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} && \
 # Switch to non-root user
 USER claude
 
-COPY .claude-code-router /home/claude/.claude-code-router
+COPY .claude-code-router/config.json /home/claude/.claude-code-router
 # Stage 7: Claude tools
 
 # Note: MCP servers would be installed here once they become available on npm
