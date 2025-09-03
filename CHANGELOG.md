@@ -1,3 +1,10 @@
+# [2.15.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.14.0...v2.15.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* split npm installs into separate lines ([e72bdea](https://github.com/liamhelmer/claude-flow-dagger/commit/e72bdea6e44084a4b309fa06b9ee01901a5a6c56))
+
 # [2.14.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.13.0...v2.14.0) (2025-09-03)
 
 
