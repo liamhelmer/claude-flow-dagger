@@ -3,6 +3,9 @@
 echo "running $0 $@"
 env
 
+which claude-flow
+which claude-code
+which ccr
 which ccr || exit 1
 ccr start &
 
