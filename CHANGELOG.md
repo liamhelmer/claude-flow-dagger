@@ -1,3 +1,17 @@
+# [2.11.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.10.0...v2.11.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* add ccr and fuelix config do docker image ([f4184a6](https://github.com/liamhelmer/claude-flow-dagger/commit/f4184a6bd77edab0d3b585504de6e1a1645ad5f5))
+
+
+### Features
+
+* build hello world app with Claude Flow ([ac65d86](https://github.com/liamhelmer/claude-flow-dagger/commit/ac65d86f8c3b38f5a45287b21fa5eb5792bd1610))
+* build hello world app with Claude Flow ([c04e681](https://github.com/liamhelmer/claude-flow-dagger/commit/c04e681fce37bd2f7e97b384e7d0441badb32337))
+* build hello world app with Claude Flow ([927a61a](https://github.com/liamhelmer/claude-flow-dagger/commit/927a61a8756fd2e275cdd6669f176c601b2013b3))
+
 # [2.10.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.9.0...v2.10.0) (2025-09-03)
 
 
