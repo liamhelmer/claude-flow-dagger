@@ -246,8 +246,9 @@ LABEL org.opencontainers.image.version="${CLAUDE_FLOW_VERSION}"
 LABEL org.opencontainers.image.created="2025-08-28"
 
 # May remove in final dagger module
-RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} @anthropic-ai/claude-code
-RUN npm -g install @musistudio/claude-code-router
+RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION} && \
+       npm -g install @anthropic-ai/claude-code && \
+       npm -g install @musistudio/claude-code-router
 
 # Switch to non-root user
 USER claude
