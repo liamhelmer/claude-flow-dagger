@@ -1,6 +1,6 @@
 {
   "name": "claude-flow-dagger",
-  "version": "2.7.0",
+  "version": "2.8.0",
   "description": "Dagger module for Claude Flow CLI with non-interactive mode support",
   "main": "dist/index.js",
   "types": "dist/index.d.ts",

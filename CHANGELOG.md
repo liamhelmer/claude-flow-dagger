@@ -1,3 +1,16 @@
+# [2.8.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.7.0...v2.8.0) (2025-09-03)
+
+
+### Features
+
+* build hello world app with Claude Flow ([5a0873d](https://github.com/liamhelmer/claude-flow-dagger/commit/5a0873d105cd2c2440851ad3a017ad42c73d143f))
+* build hello world app with Claude Flow ([35a5d1f](https://github.com/liamhelmer/claude-flow-dagger/commit/35a5d1fce2c51308ed1cc49dce1cdad407ae7135))
+* build hello world app with Claude Flow ([a97de5f](https://github.com/liamhelmer/claude-flow-dagger/commit/a97de5f71b0061f9b72afef72887fafbbadd06fb))
+* build hello world app with Claude Flow ([ddc73c4](https://github.com/liamhelmer/claude-flow-dagger/commit/ddc73c4970b349955d0933680868ef6e286f522f))
+* build hello world app with Claude Flow ([3b0037b](https://github.com/liamhelmer/claude-flow-dagger/commit/3b0037be6ccb8e20e9dfea5c687aafdad3d866c2))
+* build hello world app with Claude Flow ([8d3bb20](https://github.com/liamhelmer/claude-flow-dagger/commit/8d3bb20cebf5b473e1055fa855828bb0798c123c))
+* build hello world app with Claude Flow ([8395e68](https://github.com/liamhelmer/claude-flow-dagger/commit/8395e68847013ec4865b1dbfbffaca7e2c0a9c82))
+
 # [2.7.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.6.0...v2.7.0) (2025-09-02)
 
 
