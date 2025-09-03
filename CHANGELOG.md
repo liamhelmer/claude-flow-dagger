@@ -1,3 +1,10 @@
+# [2.14.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.13.0...v2.14.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* add ccr and fuelix config do docker image ([4c97f9d](https://github.com/liamhelmer/claude-flow-dagger/commit/4c97f9df293701386fe01b75104f689fe02da0e7))
+
 # [2.13.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.12.0...v2.13.0) (2025-09-03)
 
 
