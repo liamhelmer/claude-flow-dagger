@@ -53,7 +53,6 @@ ARG TARGETARCH
 # Node.js 22.x (latest LTS)
 RUN curl -fsSL https://deb.nodesource.com/setup_22.x | bash - && \
     apt-get install -y nodejs && \
-    npm install -g npm@latest yarn pnpm && \
     apt-get clean && rm -rf /var/lib/apt/lists/*
 
 # Python 3 (Latest available in Ubuntu 24.04)
@@ -246,14 +245,18 @@ LABEL org.opencontainers.image.source="https://github.com/ruvnet/claude-flow"
 LABEL org.opencontainers.image.version="${CLAUDE_FLOW_VERSION}"
 LABEL org.opencontainers.image.created="2025-08-28"
 
-RUN npm -g install claude-flow@${CLAUDE_FLOW_VERSION}
-RUN npm -g install @anthropic-ai/claude-code
-RUN npm -g install @musistudio/claude-code-router
-
 # Switch to non-root user
 USER claude
 
 # Stage 7: Claude tools
+
+ENV NPM_CONFIG_PREFIX=/home/claude/.npm-global
+ENV PATH=$PATH:/home/claude/.npm-global/bin
+
+RUN npm install -g npm@latest yarn pnpm && \
+      npm -g install @anthropic-ai/claude-code && \
+      npm -g install @musistudio/claude-code-router && \
+      npm -g install claude-flow@${CLAUDE_FLOW_VERSION} && ls -la ${NPM_CONFIG_PREFIX}/bin/*
 
 # Note: MCP servers would be installed here once they become available on npm
 # Currently these packages are not published to npm registry
