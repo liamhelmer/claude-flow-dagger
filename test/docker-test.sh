@@ -89,6 +89,7 @@ docker run --rm \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
     --entrypoint /workspace/claude-flow-test.sh \
+    ghcr.io/liamhelmer/claude-flow-dagger:latest \
     hive-mind spawn "build a nodejs hello world app" --claude --non-interactive --auto-spawn --verbose 2>&1 | tee $TEST_DIR/output.log || exit 1
 
 CLAUDE_OUTPUT=$(cat ${TEST_DIR}/output.log)
