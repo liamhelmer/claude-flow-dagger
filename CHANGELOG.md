@@ -1,3 +1,10 @@
+# [2.16.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.15.0...v2.16.0) (2025-09-03)
+
+
+### Bug Fixes
+
+* npm global installs as user ([2887d11](https://github.com/liamhelmer/claude-flow-dagger/commit/2887d113d2a99bba3b8c4ea6a270aa91147e0953))
+
 # [2.15.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.14.0...v2.15.0) (2025-09-03)
 
 
