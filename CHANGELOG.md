@@ -1,3 +1,10 @@
+# [2.18.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.17.0...v2.18.0) (2025-09-12)
+
+
+### Bug Fixes
+
+* claude-flow-ui identifier ([2e71775](https://github.com/liamhelmer/claude-flow-dagger/commit/2e71775d1ac85117ad3cbcbd0e47eafdd8773e3a))
+
 # [2.17.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.16.0...v2.17.0) (2025-09-12)
 
 
