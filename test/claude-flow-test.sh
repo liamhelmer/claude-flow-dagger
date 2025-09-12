@@ -17,6 +17,8 @@ ccr start &
 tmux -T 256 
 prompt="$(cat /workspace/prompt)"
 #claude-flow hive-mind spawn "$prompt" --output-format stream-json --no-interactive --headless --verbose --claude
+claude-flow init --force
+claude-flow hive-mind init --force
 claude-flow-ui -- --port 11235 --terminal-size 120x40 swarm "$prompt" --output-format stream-json
 
 #claude-flow automation auto-agent --task-complexity enterprise --no-interactive
