@@ -68,16 +68,18 @@ set -x
 
 echo "Initializing hive-mind..."
 # Initialize hive-mind
-docker run --rm \
-    -v "${TEST_DIR}:/workspace" \
-    -w /workspace/workspace \
-    -e CLAUDE_FLOW_NON_INTERACTIVE=true \
-    -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
-    -e ANTHROPIC_MODEL="claude-sonnet-4" \
-    -e DEBUG=true \
-    --entrypoint /home/claude/.npm-global/bin/claude-flow \
-    ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    hive-mind init
+#docker run --rm \
+#    -v "${TEST_DIR}:/workspace" \
+#    -w /workspace/workspace \
+#    -e CLAUDE_FLOW_NON_INTERACTIVE=true \
+#    -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
+#    -e ANTHROPIC_MODEL="claude-sonnet-4" \
+#    -e DEBUG=true \
+#    --entrypoint /home/claude/.npm-global/bin/claude-flow \
+#    ghcr.io/liamhelmer/claude-flow-dagger:latest \
+#    hive-mind init --force --neural-enhanced
+
+echo "build a nodejs hello world app" > ${TEST_DIR}/prompt
 
 echo "spawning hive-mind..."
 # Spawn hive-mind task
@@ -89,14 +91,18 @@ docker run --rm \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
     --entrypoint /workspace/claude-flow-test.sh \
-    ghcr.io/liamhelmer/claude-flow-dagger:latest \
-    hive-mind spawn "build a nodejs hello world app" --claude --non-interactive --auto-spawn --verbose 2>&1 | tee $TEST_DIR/output.log || exit 1
+    ghcr.io/liamhelmer/claude-flow-dagger:latest 
+#2>&1 | tee $TEST_DIR/output.log || exit 1
 
 CLAUDE_OUTPUT=$(cat ${TEST_DIR}/output.log)
 
 # Step 4: Check for changes and commit
 echo "4️⃣ Checking for changes..."
+cd ${TEST_DIR}/workspace
 if [ -n "$(git status --porcelain)" ]; then
+    [[ -f .gitignore ]] || echo '.gitignore' >> .gitignore
+    grep -q '.hive-mind' .gitignore || echo ".hive-mind" >> .gitignore
+    grep -q '.claude-flow' .gitignore || echo ".claude-flow" >> .gitignore
     echo "✅ Changes detected, committing..."
     git add -A
     git commit -m "feat: build hello world app with Claude Flow
@@ -110,6 +116,7 @@ Timestamp: $(date -u +"%Y-%m-%dT%H:%M:%SZ")"
     git push "https://${GITHUB_TOKEN}@github.com/badal-io/claude-test-repo.git" "$BRANCH_NAME"
 else
     echo "⚠️ No changes detected"
+    exit 1
 fi
 
 # Step 5: Create pull request using GitHub CLI in Docker
