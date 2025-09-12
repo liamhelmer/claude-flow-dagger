@@ -11,6 +11,8 @@ echo "🚀 Claude Flow Docker Test Script"
 echo "=================================="
 echo ""
 
+[[ -n "$GITHUB_TOKEN" ]] || GITHUB_TOKEN=$(gh auth token)
+
 # Check required environment variables
 if [ -z "$GITHUB_TOKEN" ]; then
     echo "❌ Error: GITHUB_TOKEN environment variable is required"
