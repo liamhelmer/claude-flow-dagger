@@ -209,7 +209,6 @@ RUN mkdir -p /home/claude/.config/claude-flow && \
 
 # Environment variables
 ENV NODE_ENV=production
-ENV CLAUDE_FLOW_NON_INTERACTIVE=true
 ENV PATH="/usr/local/go/bin:/go/bin:/root/.cargo/bin:${PATH}"
 ENV DOCKER_HOST=unix:///var/run/docker.sock
 
@@ -250,6 +249,8 @@ USER claude
 
 # Stage 7: Claude tools
 
+COPY .claude .claude.json /home/claude/
+
 ENV NPM_CONFIG_PREFIX=/home/claude/.npm-global
 ENV PATH=$PATH:/home/claude/.npm-global/bin
 
@@ -258,11 +259,15 @@ RUN npm install -g npm@latest yarn pnpm && \
       npm -g install @musistudio/claude-code-router && \
       npm -g install claude-flow@${CLAUDE_FLOW_VERSION} && \
       npm -g install @liamhelmer/claude-flow-ui && \
-      ls -la ${NPM_CONFIG_PREFIX}/bin/*
+      ls -la ${NPM_CONFIG_PREFIX}/bin/* && mkdir /workspaces
+
+WORKDIR /workspaces
+
+COPY default-workspace/ /workspaces/workspace/
 
 # Note: MCP servers would be installed here once they become available on npm
 # Currently these packages are not published to npm registry
 
 # Entrypoint
 ENTRYPOINT ["/bin/bash"]
-CMD ["-l"]
+CMD [""]

@@ -99,7 +99,7 @@ jobs:
           cache-from: type=gha,scope=buildkit-amd64
           cache-to: type=gha,mode=max,scope=buildkit-amd64
           build-args: |
-            CLAUDE_FLOW_VERSION=2.0.0-alpha.101
+            CLAUDE_FLOW_VERSION=2.0.0-alpha.108
             VERSION=${{ needs.semantic-release.outputs.new_release_version }}
             BUILD_DATE=${{ github.event.repository.updated_at }}
             VCS_REF=${{ github.sha }}

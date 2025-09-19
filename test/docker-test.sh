@@ -45,8 +45,11 @@ echo ""
 
 # Step 1: Clone the repository
 echo "1️⃣ Cloning repository..."
+rsync -av docker/default-workspace/ ${TEST_DIR}/default-workspace/ || exit 1
 pushd "$TEST_DIR"
 git clone "https://${GITHUB_TOKEN}@github.com/badal-io/claude-test-repo.git" workspace
+rsync -av default-workspace/ workspace/
+
 cd workspace
 
 # Configure git
@@ -88,10 +91,11 @@ echo "spawning hive-mind..."
 docker run --rm \
     -v "${TEST_DIR}:/workspace" \
     -w /workspace/workspace \
-    -e CLAUDE_FLOW_NON_INTERACTIVE=true \
+    -e CLAUDE_FLOW_NON_INTERACTIVE=false \
     -e FUELIX_AUTH_TOKEN="$FUELIX_AUTH_TOKEN" \
     -e ANTHROPIC_MODEL="claude-sonnet-4" \
     -e DEBUG=true \
+    -p 11235:11235 \
     --entrypoint /workspace/claude-flow-test.sh \
     ghcr.io/liamhelmer/claude-flow-dagger:latest 
 #2>&1 | tee $TEST_DIR/output.log || exit 1
