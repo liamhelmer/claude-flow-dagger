@@ -1,3 +1,10 @@
+# [2.20.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.19.0...v2.20.0) (2025-09-19)
+
+
+### Bug Fixes
+
+* workspace path ([a909113](https://github.com/liamhelmer/claude-flow-dagger/commit/a90911386f8003000cbb3cb341f07b97b89f70db))
+
 # [2.19.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.18.0...v2.19.0) (2025-09-19)
 
 # [2.18.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.17.0...v2.18.0) (2025-09-12)
