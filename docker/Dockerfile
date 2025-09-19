@@ -263,7 +263,7 @@ RUN npm install -g npm@latest yarn pnpm && \
 
 WORKDIR /workspaces
 
-COPY default-workspace/ /workspaces/workspace/
+COPY docker/default-workspace/ /workspaces/workspace/
 
 # Note: MCP servers would be installed here once they become available on npm
 # Currently these packages are not published to npm registry
