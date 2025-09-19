@@ -1,3 +1,10 @@
+# [2.21.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.20.0...v2.21.0) (2025-09-19)
+
+
+### Bug Fixes
+
+* stray auth token ([0764b46](https://github.com/liamhelmer/claude-flow-dagger/commit/0764b46fd2453f22bd7b1939e95fa8aa7b25f8cf))
+
 # [2.20.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.19.0...v2.20.0) (2025-09-19)
 
 
