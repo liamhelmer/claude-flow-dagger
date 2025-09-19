@@ -5,7 +5,7 @@
     {
       "name": "fuelix-anthropic",
       "api_base_url": "https://api.fuelix.ai/v1/chat/completions",
-      "api_key": "sk-0cCu3sbFELhqUGF3gLh7Yx",
+      "api_key": "${FUELIX_AUTH_TOKEN}",
       "models": [
         "claude-sonnet-4"
       ]
@@ -13,7 +13,7 @@
     {
       "name": "fuelix-google",
       "api_base_url": "https://api.fuelix.ai/v1/chat/completions",
-      "api_key": "sk-0cCu3sbFELhqUGF3gLh7Yx",
+      "api_key": "${FUELIX_AUTH_TOKEN}",
       "models": [
         "gemini-2.5-flash",
         "gemini-2.5-pro"
