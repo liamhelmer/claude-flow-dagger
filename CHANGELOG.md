@@ -1,3 +1,10 @@
+# [2.22.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.21.0...v2.22.0) (2025-09-19)
+
+
+### Bug Fixes
+
+* bad path ([2b31503](https://github.com/liamhelmer/claude-flow-dagger/commit/2b3150307ec9756bf2c92cf172039f5fcc01b576))
+
 # [2.21.0](https://github.com/liamhelmer/claude-flow-dagger/compare/v2.20.0...v2.21.0) (2025-09-19)
 
 
